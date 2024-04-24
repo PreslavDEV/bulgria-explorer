@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Pressable } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Link, Tabs } from "expo-router";
 
-import { useClientOnlyValue } from "@/components/useClientOnlyValue";
 import { useColorScheme } from "@/components/useColorScheme";
 import Colors from "@/constants/Colors";
 
@@ -18,41 +17,51 @@ function TabBarIcon(props: {
 export default function TabLayout() {
   const colorScheme = useColorScheme();
 
+  const renderTabBarIcon = useCallback(
+    (color: string) => <TabBarIcon name="code" color={color} />,
+    [],
+  );
+
+  const renderHeaderRight = useCallback(
+    () => (
+      <Link href="/modal" asChild>
+        <Pressable>
+          {({ pressed }) => (
+            <FontAwesome
+              name="info-circle"
+              size={25}
+              color={Colors[colorScheme ?? "light"].text}
+              style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+            />
+          )}
+        </Pressable>
+      </Link>
+    ),
+    [colorScheme],
+  );
+
   return (
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
         // Disable the static render of the header on web
         // to prevent a hydration error in React Navigation v6.
-        headerShown: useClientOnlyValue(false, true),
+        headerShown: true,
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
           title: "Tab One",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
-                    size={25}
-                    color={Colors[colorScheme ?? "light"].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
-          ),
+          tabBarIcon: ({ color }) => renderTabBarIcon(color),
+          headerRight: () => renderHeaderRight(),
         }}
       />
       <Tabs.Screen
         name="two"
         options={{
           title: "Tab Two",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => renderTabBarIcon(color),
         }}
       />
     </Tabs>

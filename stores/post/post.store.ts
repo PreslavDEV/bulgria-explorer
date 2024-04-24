@@ -11,7 +11,7 @@ import { db } from "@/configs/firebase.config";
 export class PostStore {
   protected postsCollection: CollectionReference<DocumentData>;
 
-  private path: string;
+  protected path: string;
 
   constructor() {
     this.path = "posts";

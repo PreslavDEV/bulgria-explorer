@@ -1,6 +1,6 @@
-import { getDocs } from "firebase/firestore";
+import { getDocs, onSnapshot, QuerySnapshot } from "firebase/firestore";
 import { injectable } from "inversify";
-import { action, autorun, makeObservable, observable } from "mobx";
+import { action, makeObservable, observable } from "mobx";
 
 import { IPost } from "./interface";
 import { PostStore } from "./post.store";
@@ -20,17 +20,23 @@ export class PostFeedStore extends PostStore {
       setPosts: action.bound,
     });
 
-    autorun(() => this.getPosts());
+    onSnapshot(this.postsCollection, (snapshot) => {
+      this.preparePosts(snapshot);
+    });
   }
 
-  public getPosts = async () => {
-    const snapshot = await getDocs(this.postsCollection);
+  private preparePosts = (snapshot: QuerySnapshot) => {
     const posts: IPost[] = [];
     snapshot.forEach((doc) => {
       posts.push({ id: doc.id, ...doc.data() } as IPost);
     });
 
     this.setPosts(posts);
+  };
+
+  public getPosts = async () => {
+    const snapshot = await getDocs(this.postsCollection);
+    this.preparePosts(snapshot);
   };
 
   public setPosts(posts: IPost[]) {

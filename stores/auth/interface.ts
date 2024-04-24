@@ -4,4 +4,5 @@ export interface IUser {
   email: string;
   color: string;
   points: number;
+  ranking: number;
 }

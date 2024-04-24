@@ -11,7 +11,6 @@ import { ProfilePointsInfo } from "./profile-points-info/profile-points-info";
 
 export interface IProfileDetailsProps extends Omit<IUser, "email" | "id"> {
   sheetRef: Maybe<BottomSheetMethods>;
-  ranking: number;
   onSignOut: () => void;
 }
 

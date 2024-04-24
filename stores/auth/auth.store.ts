@@ -182,6 +182,7 @@ export class AuthStore {
         email: authUser.email!,
         color: getRandomColor(),
         points: 0,
+        ranking: 0,
       };
 
       setDoc(userDoc, userPayload);

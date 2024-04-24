@@ -1,6 +1,7 @@
 import "reflect-metadata";
 
 import { useCallback, useEffect } from "react";
+import { NativeModules } from "react-native";
 import Toast from "react-native-toast-message";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import {
@@ -18,8 +19,10 @@ import { observer } from "mobx-react-lite";
 import ColorBottomSheet from "@/components/ui/color-bottom-sheet/color-bottom-sheet";
 import { TYPES } from "@/configs/di-types.config";
 import { auth } from "@/configs/firebase.config";
+import { getDictionary } from "@/configs/i18n.config";
 import { container } from "@/configs/inversify.config";
 import { useColorScheme } from "@/hooks/use-color-scheme";
+import DictionaryProvider from "@/providers/dictionary/dictionary.provider";
 import { AuthStore } from "@/stores/auth/auth.store";
 import { LayoutStore } from "@/stores/layout/layout.store";
 import { PostFeedStore } from "@/stores/post/post-feed.store";
@@ -33,6 +36,8 @@ export const unstable_settings = {
 
 const SpaceMono = require("../assets/fonts/SpaceMono-Regular.ttf");
 const SpaceMonoBold = require("../assets/fonts/SpaceMono-Bold.ttf");
+
+const locale = NativeModules.I18nManager.localeIdentifier.split("_")[0];
 
 SplashScreen.preventAutoHideAsync();
 
@@ -98,8 +103,10 @@ export default function RootLayout() {
 
   return (
     <Provider container={container}>
-      <RootLayoutNav />
-      <Toast />
+      <DictionaryProvider dict={getDictionary(locale)}>
+        <RootLayoutNav />
+        <Toast />
+      </DictionaryProvider>
     </Provider>
   );
 }

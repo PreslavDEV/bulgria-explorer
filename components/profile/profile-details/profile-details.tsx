@@ -1,10 +1,11 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { Button, StyleSheet, TouchableOpacity } from "react-native";
 import { BottomSheetMethods } from "@devvie/bottom-sheet";
 
 import { MonoText } from "@/components/styled-text";
 import { View } from "@/components/themed";
 import Avatar from "@/components/ui/avatar/avatar";
+import { useColorScheme } from "@/hooks/use-color-scheme";
 import { IUser } from "@/stores/auth/interface";
 
 import { ProfilePointsInfo } from "./profile-points-info/profile-points-info";
@@ -20,6 +21,13 @@ export const ProfileDetails = (props: IProfileDetailsProps) => {
   const handleOpenSheet = useCallback(() => {
     sheetRef?.open();
   }, [sheetRef]);
+
+  const colorScheme = useColorScheme();
+
+  const changeColorBtnBackground = useMemo(
+    () => (colorScheme === "dark" ? "#222" : "#ddd"),
+    [colorScheme],
+  );
 
   return (
     <View style={styles.mainSections}>
@@ -39,7 +47,13 @@ export const ProfileDetails = (props: IProfileDetailsProps) => {
           </MonoText>
         </View>
 
-        <TouchableOpacity style={styles.changeColor} onPress={handleOpenSheet}>
+        <TouchableOpacity
+          style={[
+            styles.changeColor,
+            { backgroundColor: changeColorBtnBackground },
+          ]}
+          onPress={handleOpenSheet}
+        >
           <MonoText bold>Change your color</MonoText>
         </TouchableOpacity>
 
@@ -72,7 +86,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   changeColor: {
-    backgroundColor: "#222",
     padding: 8,
     borderRadius: 2,
     alignItems: "center",

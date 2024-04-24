@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import { useInjection } from "inversify-react";
 import { observer } from "mobx-react-lite";
@@ -6,11 +6,20 @@ import { observer } from "mobx-react-lite";
 import { PostCard } from "@/components/post-card/post-card";
 import { View } from "@/components/themed";
 import { TYPES } from "@/configs/di-types.config";
+import Colors from "@/constants/colors";
+import { useColorScheme } from "@/hooks/use-color-scheme";
 import { PostFeedStore } from "@/stores/post/post-feed.store";
 
 export const PostFeedContainer = observer(() => {
   const { posts, votePost, userId } = useInjection<PostFeedStore>(
     TYPES.PostFeedStore,
+  );
+
+  const colorScheme = useColorScheme();
+
+  const backgroundColor = useMemo(
+    () => Colors[colorScheme ?? "light"].background,
+    [colorScheme],
   );
 
   const handleVote = useCallback(
@@ -21,7 +30,7 @@ export const PostFeedContainer = observer(() => {
   );
 
   return (
-    <ScrollView>
+    <ScrollView style={{ backgroundColor }}>
       {posts.map((post, i) => (
         <View
           key={post.id}

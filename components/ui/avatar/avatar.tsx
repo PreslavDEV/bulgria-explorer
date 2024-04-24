@@ -20,7 +20,7 @@ export default function Avatar(props: IAvatarProps) {
       start={{ x: 1, y: 1 }}
       end={{ x: 0, y: 0 }}
     >
-      <MonoText style={{ fontSize: size / 2 }} bold>
+      <MonoText style={{ fontSize: size / 2 }} bold lightColor="#fff">
         {username[0]}
       </MonoText>
     </LinearGradient>

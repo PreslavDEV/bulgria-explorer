@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useInjection } from "inversify-react";
@@ -8,35 +8,47 @@ import { MonoText } from "@/components/styled-text";
 import { View } from "@/components/themed";
 import Avatar from "@/components/ui/avatar/avatar";
 import { TYPES } from "@/configs/di-types.config";
+import Colors from "@/constants/colors";
+import { useColorScheme } from "@/hooks/use-color-scheme";
 import { LeaderboardStore } from "@/stores/leaderboard/leaderboard.store";
 
 export const LeaderboardContainer = observer(() => {
   const { users } = useInjection<LeaderboardStore>(TYPES.LeaderboardStore);
 
-  const getColorByRank = useCallback((index: number) => {
-    switch (index) {
-      case 0:
-        return "#B8860B";
-      case 1:
-        return "#BFC1C2";
-      case 2:
-        return "#8C5839";
+  const colorScheme = useColorScheme();
 
-      default:
-        if (index % 2 === 0) {
-          return "#222";
-        }
-        return "#000";
-    }
-  }, []);
+  const backgroundColor = useMemo(
+    () => Colors[colorScheme ?? "light"].background,
+    [colorScheme],
+  );
+
+  const getColorByRank = useCallback(
+    (index: number) => {
+      switch (index) {
+        case 0:
+          return "#B8860B";
+        case 1:
+          return "#BFC1C2";
+        case 2:
+          return "#8C5839";
+
+        default:
+          if (index % 2 === 0) {
+            return colorScheme === "dark" ? "#222" : "#ddd";
+          }
+          return backgroundColor;
+      }
+    },
+    [colorScheme, backgroundColor],
+  );
 
   return (
-    <ScrollView>
+    <ScrollView style={{ backgroundColor }}>
       {users.map(({ id, username, color, points, ranking }, i) => (
         <View key={id}>
           <LinearGradient
             style={styles.userRow}
-            colors={[getColorByRank(i), "#000"]}
+            colors={[getColorByRank(i), backgroundColor]}
             start={{ x: 1, y: 1 }}
             end={{ x: 0.3, y: 0 }}
           >

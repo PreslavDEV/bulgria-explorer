@@ -48,7 +48,7 @@ export const ProfilePostsSection = (props: IProfilePostsProps) => {
 
             <View style={styles.votingContainer}>
               <Icon name="heart" color="#E57373" />
-              <MonoText style={styles.bigText} bold>
+              <MonoText style={styles.bigText} bold lightColor="#fff">
                 {votesCount}
               </MonoText>
             </View>

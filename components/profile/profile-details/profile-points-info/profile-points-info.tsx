@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Modal, Pressable, StyleSheet, TouchableOpacity } from "react-native";
 
 import { MonoText } from "@/components/styled-text";
@@ -9,6 +9,7 @@ import {
   POINTS_PER_POST,
   POINTS_PER_VOTE,
 } from "@/constants/points.constants";
+import { useColorScheme } from "@/hooks/use-color-scheme";
 
 export interface IProfileDetailsProps {
   points: number;
@@ -17,6 +18,8 @@ export interface IProfileDetailsProps {
 export const ProfilePointsInfo = (props: IProfileDetailsProps) => {
   const { points } = props;
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+
+  const colorScheme = useColorScheme();
 
   const handleOpenInfoModal = useCallback(() => {
     setIsInfoModalOpen(true);
@@ -30,6 +33,11 @@ export const ProfilePointsInfo = (props: IProfileDetailsProps) => {
     return num > 1 ? "points" : "point";
   }, []);
 
+  const contentBg = useMemo(
+    () => ({ backgroundColor: colorScheme === "dark" ? "#222" : "#ddd" }),
+    [colorScheme],
+  );
+
   return (
     <>
       <TouchableOpacity style={styles.row} onPress={handleOpenInfoModal}>
@@ -42,19 +50,12 @@ export const ProfilePointsInfo = (props: IProfileDetailsProps) => {
 
       <Modal animationType="slide" transparent visible={isInfoModalOpen}>
         <Pressable style={styles.modalOverlay} onPress={handleCloseInfoModal}>
-          <View style={[styles.modalContent, styles.modalContentBackground]}>
+          <View style={[styles.modalContent, contentBg]}>
             <MonoText style={[styles.mediumText, styles.centerText]} bold>
               Points system overview:
             </MonoText>
-            <View
-              style={[styles.modalContentBackground, styles.modalContentList]}
-            >
-              <View
-                style={[
-                  styles.modalContentBackground,
-                  styles.modalContentListItem,
-                ]}
-              >
+            <View style={[contentBg, styles.modalContentList]}>
+              <View style={[contentBg, styles.modalContentListItem]}>
                 <MonoText
                   bold
                   style={styles.smallText}
@@ -64,12 +65,7 @@ export const ProfilePointsInfo = (props: IProfileDetailsProps) => {
                 </MonoText>
               </View>
 
-              <View
-                style={[
-                  styles.modalContentBackground,
-                  styles.modalContentListItem,
-                ]}
-              >
+              <View style={[contentBg, styles.modalContentListItem]}>
                 <MonoText
                   bold
                   style={styles.smallText}
@@ -79,12 +75,7 @@ export const ProfilePointsInfo = (props: IProfileDetailsProps) => {
                 </MonoText>
               </View>
 
-              <View
-                style={[
-                  styles.modalContentBackground,
-                  styles.modalContentListItem,
-                ]}
-              >
+              <View style={[contentBg, styles.modalContentListItem]}>
                 <MonoText
                   bold
                   style={styles.smallText}
@@ -134,9 +125,6 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 4,
     gap: 16,
-  },
-  modalContentBackground: {
-    backgroundColor: "#222",
   },
   modalContentList: {
     gap: 8,

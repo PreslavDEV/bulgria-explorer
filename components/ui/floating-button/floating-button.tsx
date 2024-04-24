@@ -10,7 +10,7 @@ interface IFloatingButtonProps {
 export default function FloatingButton(props: IFloatingButtonProps) {
   return (
     <TouchableOpacity style={styles.buttonContainer} onPress={props.onPress}>
-      <Icon name="plus" />
+      <Icon name="plus" color="#fff" />
     </TouchableOpacity>
   );
 }

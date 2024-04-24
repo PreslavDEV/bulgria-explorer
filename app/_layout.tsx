@@ -48,7 +48,7 @@ const RootLayoutNav = observer(() => {
   const handleAuthStateChanged = useCallback(
     (userState: Maybe<User>) => {
       getUserEntity(userState);
-      setUserId(userState?.uid || "");
+      setUserId(userState?.uid || null);
       if (initializing) setInitializing(false);
     },
     [getUserEntity, initializing, setInitializing, setUserId],

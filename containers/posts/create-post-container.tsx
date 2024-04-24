@@ -21,7 +21,7 @@ export const CreatePostContainer = observer(() => {
   const handleCreatePost = useCallback(
     async (data: ICreatePostData) => {
       try {
-        await createPost(data, user);
+        await createPost(data, user!);
         setKey((prev) => prev + 1);
         router.push("/(tabs)/");
       } catch (error) {

@@ -64,7 +64,6 @@ export const ProfileContainer = observer(() => {
     <Profile
       {...user}
       // TODO change when adding points
-      points={10}
       ranking={1}
       posts={myPosts}
       sheetRef={sheetRef}

@@ -1,4 +1,4 @@
-import { addDoc } from "firebase/firestore";
+import { addDoc, doc, increment, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { injectable } from "inversify";
 import { action, makeObservable, observable } from "mobx";
@@ -7,7 +7,7 @@ import {
   ICreatePostData,
   IImageData,
 } from "@/components/forms/create-post/interface";
-import { storage } from "@/configs/firebase.config";
+import { db, storage } from "@/configs/firebase.config";
 
 import { IUser } from "../auth/interface";
 
@@ -18,6 +18,10 @@ export class CreatePostStore extends PostStore {
   public uploadingImages: boolean;
 
   public creatingPost: boolean;
+
+  private POINTS_PER_POST = 3;
+
+  private POINTS_PER_IMAGE = 1;
 
   constructor() {
     super();
@@ -86,7 +90,7 @@ export class CreatePostStore extends PostStore {
     this.creatingPost = val;
   }
 
-  public createPost = async (data: ICreatePostData, author: Maybe<IUser>) => {
+  public createPost = async (data: ICreatePostData, author: IUser) => {
     const images = await this.uploadPostImages(data.images);
 
     this.setCreatingPost(true);
@@ -98,6 +102,15 @@ export class CreatePostStore extends PostStore {
       author,
       dateCreated: new Date().toISOString(),
       votes: [],
+    });
+
+    const userDoc = doc(db, "users", author.id);
+
+    const pointsGained =
+      this.POINTS_PER_POST + images.length * this.POINTS_PER_IMAGE;
+
+    updateDoc(userDoc, {
+      points: increment(pointsGained),
     });
 
     this.setCreatingPost(false);

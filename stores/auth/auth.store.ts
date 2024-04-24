@@ -67,10 +67,20 @@ export class AuthStore {
     });
 
     reaction(
-      () => this.user,
+      () => this.user?.id,
       () => {
         if (this.initialPostsSnapshot) {
           this.prepareMyPosts(this.initialPostsSnapshot);
+        }
+
+        if (this.user) {
+          const q = query(this.userCollection, where("id", "==", this.user.id));
+          onSnapshot(q, (snapshot) => {
+            snapshot.forEach((userDoc) => {
+              const updatedUser = userDoc.data() as IUser;
+              this.setUser(updatedUser);
+            });
+          });
         }
       },
     );
@@ -169,9 +179,10 @@ export class AuthStore {
       const userPayload = {
         id: authUser.uid,
         username,
-        email: authUser.email,
+        email: authUser.email!,
         color: getRandomColor(),
-      } as IUser;
+        points: 0,
+      };
 
       setDoc(userDoc, userPayload);
       this.setUser(userPayload);
@@ -182,6 +193,7 @@ export class AuthStore {
     await signOut(auth);
 
     this.setUser(null);
+    this.setMyPosts([]);
   };
 
   public updateUserColor = async (color: string) => {

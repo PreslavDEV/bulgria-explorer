@@ -1,12 +1,5 @@
-import { useCallback } from "react";
-
-import { ISignUpData } from "@/components/forms/sign-up-form/interface";
-import SignUpForm from "@/components/forms/sign-up-form/sign-up-form";
+import { SignUpContainer } from "@/containers/auth/sign-up.container";
 
 export default function SignUpScreen() {
-  const handleSignUp = useCallback((data: ISignUpData) => {
-    console.log(data);
-  }, []);
-
-  return <SignUpForm onSubmit={handleSignUp} />;
+  return <SignUpContainer />;
 }

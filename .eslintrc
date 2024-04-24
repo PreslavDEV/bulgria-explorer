@@ -62,6 +62,8 @@
           "error",
           {
             "groups": [
+              // Side effect imports.
+              ["^\\u0000"],
               // Packages `react` related packages come first.
               ["^react", "^@?\\w"],
               // Services

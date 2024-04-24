@@ -63,15 +63,19 @@ export const Profile = (props: IProfileProps) => {
         </View>
       </View>
       <View style={styles.posts}>
-        <MonoText style={styles.mediumText} bold>
-          Your Posts
-        </MonoText>
-        <View style={styles.myPosts}>
-          {posts.map((post) => (
-            // TODO view for posts
-            <View key={post.id} />
-          ))}
-        </View>
+        {!!posts.length && (
+          <>
+            <MonoText style={styles.mediumText} bold>
+              Your Posts
+            </MonoText>
+            <View style={styles.myPosts}>
+              {posts.map((post) => (
+                // TODO view for posts
+                <View key={post.id} />
+              ))}
+            </View>
+          </>
+        )}
 
         {!posts.length && (
           <View style={styles.noPosts}>
@@ -133,7 +137,8 @@ const styles = StyleSheet.create({
   changeColor: {
     backgroundColor: "#222",
     padding: 8,
-    borderRadius: 8,
+    borderRadius: 2,
+    alignItems: "center",
   },
   createPost: {
     backgroundColor: "#2f95dc",

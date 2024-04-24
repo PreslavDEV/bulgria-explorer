@@ -1,6 +1,7 @@
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut,
   User,
 } from "firebase/auth";
 import { injectable } from "inversify";
@@ -62,5 +63,11 @@ export class AuthStore {
       this.setUser(userCredential.user);
     }
     // TODO handle errors
+  };
+
+  public signOut = async () => {
+    await signOut(auth);
+
+    this.setUser(null);
   };
 }

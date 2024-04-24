@@ -1,5 +1,6 @@
-import { useMemo } from "react";
+import { useCallback, useMemo, useRef } from "react";
 import {
+  Animated,
   Dimensions,
   Image,
   ScrollView,
@@ -36,13 +37,8 @@ export const PostCard = (props: IPostCardProps) => {
     dateCreated,
     hasVoted,
     votesCount,
-    onVote: handleVote,
+    onVote,
   } = props;
-
-  const doubleTap = Gesture.Tap()
-    .maxDuration(250)
-    .numberOfTaps(2)
-    .onStart(handleVote);
 
   const heartProps = useMemo(() => {
     if (hasVoted) {
@@ -51,6 +47,35 @@ export const PostCard = (props: IPostCardProps) => {
 
     return { name: "heart-o", color: undefined } as const;
   }, [hasVoted]);
+
+  const opacityAnimation = useRef(new Animated.Value(0)).current;
+
+  const animateElement = useCallback(() => {
+    Animated.timing(opacityAnimation, {
+      toValue: 1,
+      duration: 400,
+      useNativeDriver: true,
+    }).start(() => {
+      Animated.timing(opacityAnimation, {
+        toValue: 0,
+        duration: 400,
+        useNativeDriver: true,
+        delay: 400,
+      }).start();
+    });
+  }, [opacityAnimation]);
+
+  const handleVote = useCallback(() => {
+    onVote();
+    if (!hasVoted) {
+      animateElement();
+    }
+  }, [animateElement, hasVoted, onVote]);
+
+  const doubleTap = Gesture.Tap()
+    .maxDuration(250)
+    .numberOfTaps(2)
+    .onStart(handleVote);
 
   return (
     <View style={styles.container}>
@@ -62,16 +87,32 @@ export const PostCard = (props: IPostCardProps) => {
       </View>
       <GestureHandlerRootView>
         <GestureDetector gesture={doubleTap}>
-          <ScrollView horizontal style={styles.scrollableImages}>
-            {images.map(({ uri, id }) => (
-              <Image
-                key={id}
-                source={{ uri }}
-                style={styles.image}
-                resizeMode="cover"
+          <View style={styles.voteImageWrapper}>
+            <Animated.View
+              style={[
+                styles.voteAnimationContainer,
+                {
+                  opacity: opacityAnimation,
+                },
+              ]}
+            >
+              <Icon
+                name="heart"
+                style={styles.voteAnimationHeart}
+                color="#DC143C"
               />
-            ))}
-          </ScrollView>
+            </Animated.View>
+            <ScrollView horizontal style={styles.scrollableImages}>
+              {images.map(({ uri, id }) => (
+                <Image
+                  key={id}
+                  source={{ uri }}
+                  style={styles.image}
+                  resizeMode="cover"
+                />
+              ))}
+            </ScrollView>
+          </View>
         </GestureDetector>
       </GestureHandlerRootView>
 
@@ -132,5 +173,17 @@ const styles = StyleSheet.create({
   },
   smallText: {
     fontSize: 12,
+  },
+  voteAnimationHeart: {
+    fontSize: 100,
+  },
+  voteAnimationContainer: {
+    position: "absolute",
+    zIndex: 999,
+  },
+  voteImageWrapper: {
+    position: "relative",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

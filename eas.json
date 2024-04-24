@@ -20,6 +20,14 @@
       },
       "ios": {
         "image": "latest"
+      },
+      "env": {
+        "EXPO_PUBLIC_API_KEY": "AIzaSyASUNj981zA__z6xK_1GAUMo-WwOsHSPIE",
+        "EXPO_PUBLIC_PROJECT_ID": "bulgaria-explorer",
+        "EXPO_PUBLIC_APP_ID": "1:1004477355444:android:b0dbeb0cdcb2e21fea0ee1",
+        "EXPO_PUBLIC_MESSAGING_SENDER_ID": "1004477355444",
+        "EXPO_PUBLIC_DATABASE_URL": "https://bulgaria-explorer-default-rtdb.europe-west1.firebasedatabase.app/",
+        "EXPO_PUBLIC_STORAGE_URL": "gs://bulgaria-explorer.appspot.com"
       }
     }
   },

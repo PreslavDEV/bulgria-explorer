@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useContext, useEffect, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
   Button,
@@ -20,6 +20,8 @@ import InputField from "@/components/ui/input/input";
 import Colors from "@/constants/colors";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { useHandleError } from "@/hooks/use-handle-error";
+import { DictContext } from "@/providers/dictionary/dictionary.provider";
+import { dynamicTranslate } from "@/utils/dynamic-translate.util";
 
 import { ICreatePostData } from "./interface";
 import { createPostSchema } from "./validation";
@@ -33,6 +35,18 @@ interface ICreatePostFormProps {
 export default function CreatePostForm(props: ICreatePostFormProps) {
   const { uploadingImages, creatingPost } = props;
 
+  const { createPost, global } = useContext(DictContext);
+
+  const {
+    errors: errorsDict,
+    permissionDenied,
+    permissionName,
+    uploadingText,
+    creatingText,
+    cityLabel,
+    descriptionLabel,
+  } = createPost;
+
   const colorScheme = useColorScheme();
 
   const setError = useHandleError();
@@ -40,7 +54,7 @@ export default function CreatePostForm(props: ICreatePostFormProps) {
   const { control, handleSubmit, formState, watch, setValue } =
     useForm<ICreatePostData>({
       mode: "onBlur",
-      resolver: zodResolver(createPostSchema),
+      resolver: zodResolver(createPostSchema(errorsDict)),
       defaultValues: {
         images: [],
       },
@@ -52,7 +66,11 @@ export default function CreatePostForm(props: ICreatePostFormProps) {
   const handleUserCity = useCallback(async () => {
     const { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
-      setError("Permission to access location was denied");
+      setError(
+        dynamicTranslate(permissionDenied, {
+          name: permissionName.location,
+        }),
+      );
     }
 
     const { coords } = await Location.getCurrentPositionAsync({});
@@ -60,7 +78,7 @@ export default function CreatePostForm(props: ICreatePostFormProps) {
     const { city } = gecodedAddresses[0];
 
     setValue("city", city || "");
-  }, [setError, setValue]);
+  }, [permissionDenied, permissionName.location, setError, setValue]);
 
   useEffect(() => {
     handleUserCity();
@@ -92,15 +110,15 @@ export default function CreatePostForm(props: ICreatePostFormProps) {
 
   const loadingText = useMemo(() => {
     if (uploadingImages) {
-      return "Uploading...";
+      return uploadingText;
     }
 
     if (creatingPost) {
-      return "Creating your post...";
+      return creatingText;
     }
 
     return null;
-  }, [creatingPost, uploadingImages]);
+  }, [creatingPost, creatingText, uploadingImages, uploadingText]);
 
   return (
     <View style={styles.container}>
@@ -111,7 +129,7 @@ export default function CreatePostForm(props: ICreatePostFormProps) {
           <InputField
             {...rest}
             textContentType="addressCity"
-            label="City"
+            label={cityLabel}
             error={errors.city?.message}
             onChangeText={handleChange}
           />
@@ -124,7 +142,7 @@ export default function CreatePostForm(props: ICreatePostFormProps) {
         render={({ field: { ref, onChange: handleChange, ...rest } }) => (
           <InputField
             {...rest}
-            label="Description"
+            label={descriptionLabel}
             multiline
             error={errors.description?.message}
             onChangeText={handleChange}
@@ -171,7 +189,7 @@ export default function CreatePostForm(props: ICreatePostFormProps) {
         <ImageGalleryInput onAddImage={handleAddImage} />
       </View>
 
-      <Button title="Submit" onPress={handleSubmit(props.onSubmit)} />
+      <Button title={global.submit} onPress={handleSubmit(props.onSubmit)} />
 
       {loadingText && (
         <View style={styles.loadingContainer}>

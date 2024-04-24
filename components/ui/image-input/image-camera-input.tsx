@@ -1,8 +1,10 @@
-import { useCallback } from "react";
+import { useCallback, useContext } from "react";
 import { TouchableOpacity } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 
 import { useHandleError } from "@/hooks/use-handle-error";
+import { DictContext } from "@/providers/dictionary/dictionary.provider";
+import { dynamicTranslate } from "@/utils/dynamic-translate.util";
 
 import Icon from "../icon/icon";
 
@@ -11,13 +13,19 @@ import { imageInputStyles } from "./styles";
 
 export default function ImageCameraInput(props: IImageInputProps) {
   const { onAddImage } = props;
+  const { permissionDenied, permissionName } =
+    useContext(DictContext).createPost;
 
   const setError = useHandleError();
 
   const handleUpload = useCallback(async () => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
     if (!permissionResult.granted) {
-      setError("You've refused to allow this app to access your camera!");
+      setError(
+        dynamicTranslate(permissionDenied, {
+          name: permissionName.camera,
+        }),
+      );
     }
 
     const result = await ImagePicker.launchCameraAsync({
@@ -28,7 +36,7 @@ export default function ImageCameraInput(props: IImageInputProps) {
     });
 
     onAddImage(result);
-  }, [onAddImage, setError]);
+  }, [onAddImage, permissionDenied, permissionName.camera, setError]);
 
   return (
     <TouchableOpacity style={imageInputStyles.container} onPress={handleUpload}>

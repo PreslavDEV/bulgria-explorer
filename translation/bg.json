@@ -20,7 +20,7 @@
 
   "createPost": {
     "uploadingText": "Качване...",
-    "creatingText": "Създаване на вашия пост...",
+    "creatingText": "Създаване на Вашия пост...",
     "cityLabel": "Град",
     "descriptionLabel": "Описание",
     "permissionDenied": "Отказан достъп до {name}",

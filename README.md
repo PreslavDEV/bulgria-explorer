@@ -24,11 +24,18 @@ Bulgaria explorer application
 - React Native with Expo - Navigation (Typescript)
 - ESLint
 - MobX
+- Firebase
 
 ## Environment variables
 
-| Variable | Description | Example |
-| -------- | ----------- | ------- |
+| Variable                        | Description                  | Example |
+| ------------------------------- | ---------------------------- | ------- |
+| EXPO_PUBLIC_API_KEY             | Firebase api key             | ------- |
+| EXPO_PUBLIC_PROJECT_ID          | Firebase project id          | ------- |
+| EXPO_PUBLIC_APP_ID              | Firebase app id              | ------- |
+| EXPO_PUBLIC_MESSAGING_SENDER_ID | Firebase messaging sender id | ------- |
+| EXPO_PUBLIC_DATABASE_URL        | Firebase database url        | ------- |
+| EXPO_PUBLIC_STORAGE_URL         | Firebase storage url         | ------- |
 
 ## Setup
 

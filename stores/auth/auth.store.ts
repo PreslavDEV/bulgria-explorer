@@ -4,20 +4,40 @@ import {
   signOut,
   User,
 } from "firebase/auth";
+import {
+  collection,
+  CollectionReference,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+} from "firebase/firestore";
 import { injectable } from "inversify";
 import { action, makeObservable, observable } from "mobx";
 
-import { ISignInData } from "@/components/forms/sigin-in-form/interface";
+import { ISignInData } from "@/components/forms/sign-in-form/interface";
 import { ISignUpData } from "@/components/forms/sign-up-form/interface";
-import { auth } from "@/configs/firebase.config";
+import { auth, db } from "@/configs/firebase.config";
+
+import { IUser } from "./interface";
 
 @injectable()
 export class AuthStore {
-  public user: Maybe<User>;
+  private path: string;
+
+  private userCollection: CollectionReference;
+
+  public user: Maybe<IUser>;
 
   public initializing: boolean;
 
   constructor() {
+    this.path = "users";
+
+    this.userCollection = collection(db, this.path);
+
     this.user = null;
 
     this.initializing = true;
@@ -31,7 +51,13 @@ export class AuthStore {
     });
   }
 
-  public setUser(user: User | null) {
+  private checkIsUsernameAvailable = async (username: string) => {
+    const q = query(this.userCollection, where("username", "==", username));
+    const snapshot = await getDocs(q);
+    return snapshot.empty;
+  };
+
+  public setUser(user: Maybe<IUser>) {
     this.user = user;
   }
 
@@ -39,7 +65,7 @@ export class AuthStore {
     this.initializing = value;
   }
 
-  public signUp = async ({ email, password }: ISignUpData) => {
+  public signUp = async ({ email, password, username }: ISignUpData) => {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
@@ -47,9 +73,13 @@ export class AuthStore {
     );
 
     if (userCredential) {
-      this.setUser(userCredential.user);
+      const isUsernameAvailable = await this.checkIsUsernameAvailable(username);
+      if (isUsernameAvailable) {
+        this.getUserEntity(userCredential.user, username);
+      } else {
+        throw new Error("Username already exists");
+      }
     }
-    // TODO handle errors
   };
 
   public signIn = async ({ email, password }: ISignInData) => {
@@ -60,9 +90,31 @@ export class AuthStore {
     );
 
     if (userCredential) {
-      this.setUser(userCredential.user);
+      this.getUserEntity(userCredential.user);
     }
     // TODO handle errors
+  };
+
+  public getUserEntity = async (authUser: Maybe<User>, username?: string) => {
+    if (!authUser) return;
+    const userDoc = doc(db, this.path, authUser.uid);
+    const snapshot = await getDoc(userDoc);
+
+    if (snapshot.exists()) {
+      const data = snapshot.data() as IUser;
+      this.setUser(data);
+    } else {
+      if (!username) return;
+
+      const userPayload = {
+        id: authUser.uid,
+        username,
+        email: authUser.email,
+      } as IUser;
+
+      setDoc(userDoc, userPayload);
+      this.setUser(userPayload);
+    }
   };
 
   public signOut = async () => {

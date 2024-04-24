@@ -1,6 +1,7 @@
 import "reflect-metadata";
 
 import { useCallback, useEffect } from "react";
+import Toast from "react-native-toast-message";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import {
   DarkTheme,
@@ -33,16 +34,15 @@ SplashScreen.preventAutoHideAsync();
 
 const RootLayoutNav = observer(() => {
   const colorScheme = useColorScheme();
-  const { initializing, setInitializing, setUser } = useInjection<AuthStore>(
-    TYPES.AuthStore,
-  );
+  const { initializing, setInitializing, getUserEntity } =
+    useInjection<AuthStore>(TYPES.AuthStore);
 
   const handleAuthStateChanged = useCallback(
     (userState: Maybe<User>) => {
-      setUser(userState);
+      getUserEntity(userState);
       if (initializing) setInitializing(false);
     },
-    [initializing, setInitializing, setUser],
+    [getUserEntity, initializing, setInitializing],
   );
 
   useEffect(() => {
@@ -86,6 +86,7 @@ export default function RootLayout() {
   return (
     <Provider container={container}>
       <RootLayoutNav />
+      <Toast />
     </Provider>
   );
 }

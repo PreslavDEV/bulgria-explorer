@@ -37,6 +37,20 @@ export default function SignUpForm(props: ISignUpFormProps) {
       />
 
       <Controller
+        name="username"
+        control={control}
+        render={({ field: { ref, onChange: handleChange, ...rest } }) => (
+          <InputField
+            {...rest}
+            textContentType="username"
+            label="Username"
+            error={errors.username?.message}
+            onChangeText={handleChange}
+          />
+        )}
+      />
+
+      <Controller
         name="password"
         control={control}
         render={({ field: { ref, onChange: handleChange, ...rest } }) => (

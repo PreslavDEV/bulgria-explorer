@@ -9,6 +9,7 @@ export const signUpSchema: ZodType<ISignUpData> = z
     email: z
       .string()
       .regex(emailRegex, { message: "Please enter a valid email address" }),
+    username: z.string().min(3, { message: "Minimum three characters" }),
     password: z.string().regex(passwordRegex, {
       message:
         "Minimum eight characters, at least one letter and one number, at least on special character",

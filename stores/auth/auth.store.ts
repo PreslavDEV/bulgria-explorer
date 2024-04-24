@@ -105,7 +105,7 @@ export class AuthStore {
           // false because in this context hasVoted is irrelevant, we don't need to make calculations
           hasVoted: false,
           dateCreated,
-          votes: document.data().votes.length,
+          votesCount: document.data().votes.length,
         } as IPost);
       }
     });

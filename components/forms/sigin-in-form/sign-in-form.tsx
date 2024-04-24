@@ -6,17 +6,17 @@ import { View } from "@/components/themed";
 import InputField from "@/components/ui/input/input";
 import PasswordInput from "@/components/ui/input/password-input";
 
-import { ISignUpData } from "./interface";
-import { signUpSchema } from "./validation";
+import { ISignInData } from "./interface";
+import { signInSchema } from "./validation";
 
-interface ISignUpFormProps {
-  onSubmit: (data: ISignUpData) => void;
+interface ISignInFormProps {
+  onSubmit: (data: ISignInData) => void;
 }
 
-export default function SignUpForm(props: ISignUpFormProps) {
-  const { control, handleSubmit, formState } = useForm<ISignUpData>({
+export default function SignInForm(props: ISignInFormProps) {
+  const { control, handleSubmit, formState } = useForm<ISignInData>({
     mode: "onBlur",
-    resolver: zodResolver(signUpSchema),
+    resolver: zodResolver(signInSchema),
   });
   const { errors } = formState;
 
@@ -46,21 +46,6 @@ export default function SignUpForm(props: ISignUpFormProps) {
             label="Password"
             secureTextEntry
             error={errors.password?.message}
-            onChangeText={handleChange}
-          />
-        )}
-      />
-
-      <Controller
-        name="confirmPassword"
-        control={control}
-        render={({ field: { ref, onChange: handleChange, ...rest } }) => (
-          <PasswordInput
-            {...rest}
-            textContentType="password"
-            label="Password"
-            secureTextEntry
-            error={errors.confirmPassword?.message}
             onChangeText={handleChange}
           />
         )}

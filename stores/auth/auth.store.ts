@@ -1,7 +1,12 @@
-import { createUserWithEmailAndPassword, User } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  User,
+} from "firebase/auth";
 import { injectable } from "inversify";
 import { action, makeObservable, observable } from "mobx";
 
+import { ISignInData } from "@/components/forms/sigin-in-form/interface";
 import { ISignUpData } from "@/components/forms/sign-up-form/interface";
 import { auth } from "@/configs/firebase.config";
 
@@ -35,6 +40,19 @@ export class AuthStore {
 
   public signUp = async ({ email, password }: ISignUpData) => {
     const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password,
+    );
+
+    if (userCredential) {
+      this.setUser(userCredential.user);
+    }
+    // TODO handle errors
+  };
+
+  public signIn = async ({ email, password }: ISignInData) => {
+    const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
       password,

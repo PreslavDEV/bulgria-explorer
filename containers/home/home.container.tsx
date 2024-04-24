@@ -8,9 +8,11 @@ import { Text, View } from "@/components/themed";
 import FloatingButton from "@/components/ui/floating-button/floating-button";
 import { TYPES } from "@/configs/di-types.config";
 import { AuthStore } from "@/stores/auth/auth.store";
+import { PostFeedStore } from "@/stores/post/post-feed.store";
 
 export const HomeContainer = observer(() => {
   const { user } = useInjection<AuthStore>(TYPES.AuthStore);
+  const { posts } = useInjection<PostFeedStore>(TYPES.PostFeedStore);
 
   const handleClick = useCallback(() => {
     const route = user ? "/create-post/" : "/(tabs)/(auth)/sign-in";
@@ -22,6 +24,13 @@ export const HomeContainer = observer(() => {
     <View style={styles.container}>
       <Text style={styles.title}>Home</Text>
       <FloatingButton onPress={handleClick} />
+      {posts.map(({ city, id, description, images }) => (
+        <View key={id}>
+          <Text>{city}</Text>
+          <Text>{description}</Text>
+          <Text>{JSON.stringify(images)}</Text>
+        </View>
+      ))}
     </View>
   );
 });

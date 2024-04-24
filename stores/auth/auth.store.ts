@@ -20,6 +20,7 @@ import { action, makeObservable, observable } from "mobx";
 import { ISignInData } from "@/components/forms/sign-in-form/interface";
 import { ISignUpData } from "@/components/forms/sign-up-form/interface";
 import { auth, db } from "@/configs/firebase.config";
+import { getRandomColor } from "@/utils/get-random-color.util";
 
 import { IUser } from "./interface";
 
@@ -111,6 +112,7 @@ export class AuthStore {
         id: authUser.uid,
         username,
         email: authUser.email,
+        color: getRandomColor(),
       } as IUser;
 
       setDoc(userDoc, userPayload);

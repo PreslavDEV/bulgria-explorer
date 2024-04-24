@@ -96,6 +96,7 @@ export class CreatePostStore extends PostStore {
       description: data.description || null,
       images,
       author,
+      dateCreated: new Date().toISOString(),
     });
 
     this.setCreatingPost(false);

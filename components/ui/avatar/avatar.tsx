@@ -6,15 +6,16 @@ import { MonoText } from "@/components/styled-text";
 
 interface IAvatarProps {
   username: string;
+  color: string;
 }
 
 export default function Avatar(props: IAvatarProps) {
-  const { username } = props;
+  const { username, color } = props;
 
   return (
     <LinearGradient
       style={styles.avatar}
-      colors={["#FF5F6D", "#2f95dc"]}
+      colors={[color, "#2f95dc"]}
       start={{ x: 1, y: 1 }}
       end={{ x: 0, y: 0 }}
     >

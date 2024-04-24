@@ -33,6 +33,7 @@ export const PostCard = (props: IPostCardProps) => {
     description,
     images,
     author,
+    dateCreated,
     hasVoted,
     votesCount,
     onVote: handleVote,
@@ -54,7 +55,7 @@ export const PostCard = (props: IPostCardProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Avatar username={author.username} />
+        <Avatar username={author.username} color={author.color} />
         <MonoText style={styles.mediumText} bold>
           {author.username}
         </MonoText>
@@ -95,8 +96,7 @@ export const PostCard = (props: IPostCardProps) => {
           </MonoText>
         )}
         <MonoText darkColor="#777" lightColor="#777" style={styles.smallText}>
-          {/* TODO add date to post */}
-          {new Date().toTimeString()}
+          {dateCreated}
         </MonoText>
       </View>
     </View>

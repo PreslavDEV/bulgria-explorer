@@ -12,6 +12,6 @@ const colors = [
 ];
 
 export const getRandomColor = () => {
-  const index = Math.random() * colors.length;
+  const index = Math.floor(Math.random() * colors.length);
   return colors[index];
 };

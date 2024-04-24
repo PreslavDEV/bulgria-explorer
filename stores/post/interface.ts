@@ -7,5 +7,6 @@ export interface IPost {
   city: string;
   description: Maybe<string>;
   images: IImageData[];
+  dateCreated: string;
   author: IUser;
 }

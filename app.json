@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Bulgaria Explorer",
-    "slug": "bulgaria-exploer",
+    "slug": "bulgaria-explorer",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/android/playstore-icon.png",
@@ -49,9 +49,9 @@
         "origin": false
       },
       "eas": {
-        "projectId": "068c30a0-b7d8-4a51-980e-6ce9154b1537"
+        "projectId": "7d63733b-ce36-482c-b050-093d7cb81cc6"
       }
     },
-    "owner": "privanchev"
+    "owner": "privanchevv"
   }
 }

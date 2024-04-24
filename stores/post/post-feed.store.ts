@@ -13,6 +13,7 @@ import { injectable } from "inversify";
 import { action, makeObservable, observable, reaction } from "mobx";
 
 import { db } from "@/configs/firebase.config";
+import { POINTS_PER_VOTE } from "@/constants/points.constants";
 import { getFormattedPostDate } from "@/utils/get-formatted-post-date.util";
 
 import { IUser } from "../auth/interface";
@@ -25,8 +26,6 @@ export class PostFeedStore extends PostStore {
   public posts: IPost[];
 
   public userId: Maybe<string>;
-
-  private POINTS_PER_VOTE = 1;
 
   constructor() {
     super();
@@ -115,7 +114,7 @@ export class PostFeedStore extends PostStore {
 
     const userDoc = doc(db, "users", authorId);
 
-    let pointsChange = this.POINTS_PER_VOTE;
+    let pointsChange = POINTS_PER_VOTE;
 
     if (post.hasVoted) {
       setDoc(postDoc, { votes: arrayRemove(this.userId) }, { merge: true });

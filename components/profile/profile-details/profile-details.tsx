@@ -7,9 +7,10 @@ import { View } from "@/components/themed";
 import Avatar from "@/components/ui/avatar/avatar";
 import { IUser } from "@/stores/auth/interface";
 
+import { ProfilePointsInfo } from "./profile-points-info/profile-points-info";
+
 export interface IProfileDetailsProps extends Omit<IUser, "email" | "id"> {
   sheetRef: Maybe<BottomSheetMethods>;
-  points: number;
   ranking: number;
   onSignOut: () => void;
 }
@@ -30,12 +31,8 @@ export const ProfileDetails = (props: IProfileDetailsProps) => {
         </MonoText>
       </View>
       <View style={styles.details}>
-        <View style={styles.row}>
-          <MonoText style={styles.smallText}>You have gained:</MonoText>
-          <MonoText style={styles.mediumText} bold>
-            {points} points
-          </MonoText>
-        </View>
+        <ProfilePointsInfo points={points} />
+
         <View style={styles.row}>
           <MonoText style={styles.smallText}>You are ranked:</MonoText>
           <MonoText style={styles.mediumText} bold>

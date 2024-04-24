@@ -8,6 +8,10 @@ import {
   IImageData,
 } from "@/components/forms/create-post/interface";
 import { db, storage } from "@/configs/firebase.config";
+import {
+  POINTS_PER_IMAGE,
+  POINTS_PER_POST,
+} from "@/constants/points.constants";
 
 import { IUser } from "../auth/interface";
 
@@ -18,10 +22,6 @@ export class CreatePostStore extends PostStore {
   public uploadingImages: boolean;
 
   public creatingPost: boolean;
-
-  private POINTS_PER_POST = 3;
-
-  private POINTS_PER_IMAGE = 1;
 
   constructor() {
     super();
@@ -106,8 +106,7 @@ export class CreatePostStore extends PostStore {
 
     const userDoc = doc(db, "users", author.id);
 
-    const pointsGained =
-      this.POINTS_PER_POST + images.length * this.POINTS_PER_IMAGE;
+    const pointsGained = POINTS_PER_POST + images.length * POINTS_PER_IMAGE;
 
     updateDoc(userDoc, {
       points: increment(pointsGained),

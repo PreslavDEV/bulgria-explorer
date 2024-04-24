@@ -8,12 +8,11 @@ import { ICreatePostData } from "@/components/forms/create-post/interface";
 import { TYPES } from "@/configs/di-types.config";
 import { useHandleError } from "@/hooks/use-handle-error";
 import { AuthStore } from "@/stores/auth/auth.store";
-import { PostStore } from "@/stores/post/post.store";
+import { CreatePostStore } from "@/stores/post/create-post.store";
 
 export const CreatePostContainer = observer(() => {
-  const { createPost, uploadingImages, creatingPost } = useInjection<PostStore>(
-    TYPES.PostStore,
-  );
+  const { createPost, uploadingImages, creatingPost } =
+    useInjection<CreatePostStore>(TYPES.CreatePostStore);
   const { user } = useInjection<AuthStore>(TYPES.AuthStore);
   const [key, setKey] = useState(0);
 

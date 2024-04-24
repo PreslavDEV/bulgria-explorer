@@ -77,9 +77,9 @@ export class AuthStore {
 
       if (userCredential) {
         this.getUserEntity(userCredential.user, username);
-      } else {
-        throw new Error("Username already exists");
       }
+    } else {
+      throw new Error("Username already exists");
     }
   };
 

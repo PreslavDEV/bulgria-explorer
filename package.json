@@ -42,7 +42,8 @@
     "react-native-screens": "~3.29.0",
     "react-native-web": "~0.19.6",
     "reflect-metadata": "^0.2.2",
-    "zod": "^3.22.5"
+    "zod": "^3.22.5",
+    "expo-location": "~16.5.5"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

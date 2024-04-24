@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
   Button,
@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ImagePickerResult } from "expo-image-picker";
+import * as Location from "expo-location";
 
 import { Text, View } from "@/components/themed";
 import Icon from "@/components/ui/icon/icon";
@@ -39,6 +40,24 @@ export default function CreatePostForm(props: ICreatePostFormProps) {
   const { errors } = formState;
 
   const images = watch("images");
+
+  const handleUserCity = useCallback(async () => {
+    const { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      alert("Permission to access location was denied");
+      return;
+    }
+
+    const { coords } = await Location.getCurrentPositionAsync({});
+    const gecodedAddresses = await Location.reverseGeocodeAsync(coords);
+    const { city } = gecodedAddresses[0];
+
+    setValue("city", city || "");
+  }, [setValue]);
+
+  useEffect(() => {
+    handleUserCity();
+  }, [handleUserCity]);
 
   const handleAddImage = useCallback(
     (result: ImagePickerResult) => {

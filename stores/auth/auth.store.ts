@@ -66,15 +66,16 @@ export class AuthStore {
   }
 
   public signUp = async ({ email, password, username }: ISignUpData) => {
-    const userCredential = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password,
-    );
+    const isUsernameAvailable = await this.checkIsUsernameAvailable(username);
 
-    if (userCredential) {
-      const isUsernameAvailable = await this.checkIsUsernameAvailable(username);
-      if (isUsernameAvailable) {
+    if (isUsernameAvailable) {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
+
+      if (userCredential) {
         this.getUserEntity(userCredential.user, username);
       } else {
         throw new Error("Username already exists");

@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "bulgaria-explorer",
+    "name": "Bulgaria Explorer",
     "slug": "bulgaria-explorer",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/ios/appstore.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
@@ -19,7 +19,7 @@
     "android": {
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/android/playstore-icon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.bulgaria.explorer"
@@ -27,7 +27,7 @@
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/web/favicon-32x32.png"
     },
     "plugins": ["expo-router", "expo-image-picker", "expo-location"],
     "experiments": {

@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Bulgaria Explorer",
-    "slug": "bulgaria-explorer",
+    "slug": "bulgaria-exploer",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/android/playstore-icon.png",
@@ -12,7 +12,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -22,14 +24,23 @@
         "foregroundImage": "./assets/images/android/playstore-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.bulgaria.explorer"
+      "package": "com.bulgaria.explorer",
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION"
+      ]
     },
     "web": {
       "bundler": "metro",
       "output": "static",
       "favicon": "./assets/images/web/favicon-32x32.png"
     },
-    "plugins": ["expo-router", "expo-image-picker", "expo-location"],
+    "plugins": [
+      "expo-router",
+      "expo-image-picker",
+      "expo-location"
+    ],
     "experiments": {
       "typedRoutes": true
     },
@@ -38,8 +49,9 @@
         "origin": false
       },
       "eas": {
-        "projectId": "5d43a6a1-4b36-4c5b-bf4e-38f31c59452a"
+        "projectId": "068c30a0-b7d8-4a51-980e-6ce9154b1537"
       }
-    }
+    },
+    "owner": "privanchev"
   }
 }

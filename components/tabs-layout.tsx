@@ -32,6 +32,12 @@ export default function TabsLayout(props: ITabsLayoutProps) {
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
         headerShown: true,
+        tabBarLabelStyle: {
+          fontFamily: "SpaceMono",
+        },
+        headerTitleStyle: {
+          fontFamily: "SpaceMonoBold",
+        },
       }}
     >
       {tabs.map(({ name, title, options }) => (

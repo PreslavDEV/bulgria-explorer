@@ -9,7 +9,9 @@ export default function NotFoundScreen() {
     <>
       <Stack.Screen options={{ title: "Oops!" }} />
       <View style={styles.container}>
-        <MonoText style={styles.title}>404 Not found!</MonoText>
+        <MonoText style={styles.title} bold>
+          404 Not found!
+        </MonoText>
 
         <Link href="/" style={styles.link}>
           <MonoText style={styles.linkText}>Go to home screen!</MonoText>
@@ -28,7 +30,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontWeight: "bold",
   },
   link: {
     marginTop: 15,

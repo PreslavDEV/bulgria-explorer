@@ -6,7 +6,9 @@ import { View } from "@/components/themed";
 export default function LeaderboardScreen() {
   return (
     <View style={styles.container}>
-      <MonoText style={styles.title}>Leaderboard</MonoText>
+      <MonoText style={styles.title} bold>
+        Leaderboard
+      </MonoText>
       <View
         style={styles.separator}
         lightColor="#eee"
@@ -24,7 +26,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontWeight: "bold",
   },
   separator: {
     marginVertical: 30,

@@ -18,7 +18,9 @@ export default function Avatar(props: IAvatarProps) {
       start={{ x: 1, y: 1 }}
       end={{ x: 0, y: 0 }}
     >
-      <MonoText style={styles.username}>{username[0]}</MonoText>
+      <MonoText style={styles.username} bold>
+        {username[0]}
+      </MonoText>
     </LinearGradient>
   );
 }
@@ -33,6 +35,5 @@ const styles = StyleSheet.create({
   },
   username: {
     fontSize: 24,
-    fontWeight: "bold",
   },
 });

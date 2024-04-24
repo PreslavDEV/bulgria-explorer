@@ -18,7 +18,9 @@ export default function SignInScreen() {
 
   return (
     <View style={styles.container}>
-      <MonoText style={styles.title}>Profile</MonoText>
+      <MonoText style={styles.title} bold>
+        Profile
+      </MonoText>
       <View
         style={styles.separator}
         lightColor="#eee"
@@ -37,7 +39,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontWeight: "bold",
   },
   separator: {
     marginVertical: 30,

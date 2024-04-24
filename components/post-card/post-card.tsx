@@ -55,7 +55,9 @@ export const PostCard = (props: IPostCardProps) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <Avatar username={author.username} />
-        <MonoText style={styles.mediumText}>{author.username}</MonoText>
+        <MonoText style={styles.mediumText} bold>
+          {author.username}
+        </MonoText>
       </View>
       <GestureHandlerRootView>
         <GestureDetector gesture={doubleTap}>
@@ -77,12 +79,16 @@ export const PostCard = (props: IPostCardProps) => {
           <Icon {...heartProps} />
         </TouchableOpacity>
         {!!votesCount && (
-          <MonoText style={styles.bigText}>{votesCount}</MonoText>
+          <MonoText style={styles.bigText} bold>
+            {votesCount}
+          </MonoText>
         )}
       </View>
 
       <View>
-        <MonoText style={styles.city}>{city}</MonoText>
+        <MonoText style={styles.city} bold>
+          {city}
+        </MonoText>
         {description && (
           <MonoText darkColor="#ccc" lightColor="#333" style={styles.smallText}>
             {description}
@@ -117,11 +123,9 @@ const styles = StyleSheet.create({
   },
   city: {
     fontSize: 16,
-    fontWeight: "bold",
   },
   bigText: {
     fontSize: 20,
-    fontWeight: "bold",
   },
   mediumText: {
     fontSize: 16,

@@ -29,6 +29,7 @@ export const unstable_settings = {
 };
 
 const SpaceMono = require("../assets/fonts/SpaceMono-Regular.ttf");
+const SpaceMonoBold = require("../assets/fonts/SpaceMono-Bold.ttf");
 
 SplashScreen.preventAutoHideAsync();
 
@@ -65,6 +66,7 @@ const RootLayoutNav = observer(() => {
 export default function RootLayout() {
   const [loaded, error] = useFonts({
     SpaceMono,
+    SpaceMonoBold,
     ...FontAwesome.font,
   });
 

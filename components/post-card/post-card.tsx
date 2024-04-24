@@ -15,6 +15,7 @@ import {
 import { router } from "expo-router";
 
 import { View } from "@/components/themed";
+import { useColorScheme } from "@/hooks/use-color-scheme";
 import { IPost } from "@/stores/post/interface";
 
 import { MonoText } from "../styled-text";
@@ -42,13 +43,18 @@ export const PostCard = (props: IPostCardProps) => {
     onVote,
   } = props;
 
+  const colorScheme = useColorScheme();
+
   const heartProps = useMemo(() => {
     if (hasVoted) {
       return { name: "heart", color: "#DC143C" } as const;
     }
 
-    return { name: "heart-o", color: undefined } as const;
-  }, [hasVoted]);
+    return {
+      name: "heart-o",
+      color: colorScheme === "dark" ? "#fff" : "#000",
+    } as const;
+  }, [hasVoted, colorScheme]);
 
   const opacityAnimation = useRef(new Animated.Value(0)).current;
 

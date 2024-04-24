@@ -1,7 +1,8 @@
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import BottomSheet, { BottomSheetMethods } from "@devvie/bottom-sheet";
 
 import { MonoText } from "@/components/styled-text";
+import { View } from "@/components/themed";
 
 export interface IBottomSheetOption {
   label: string;

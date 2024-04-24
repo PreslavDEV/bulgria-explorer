@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   username: {
-    fontSize: 32,
+    fontSize: 24,
   },
   mediumText: {
     fontSize: 16,

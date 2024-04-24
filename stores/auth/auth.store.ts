@@ -24,6 +24,7 @@ import { action, makeObservable, observable, reaction } from "mobx";
 import { ISignInData } from "@/components/forms/sign-in-form/interface";
 import { ISignUpData } from "@/components/forms/sign-up-form/interface";
 import { auth, db } from "@/configs/firebase.config";
+import { getDictionary, locale } from "@/configs/i18n.config";
 import { getFormattedPostDate } from "@/utils/get-formatted-post-date.util";
 import { getRandomColor } from "@/utils/get-random-color.util";
 
@@ -158,7 +159,7 @@ export class AuthStore {
         this.getUserEntity(userCredential.user, username);
       }
     } else {
-      throw new Error("Username already exists");
+      throw new Error(getDictionary(locale).signUp.errors.username.server);
     }
   };
 

@@ -58,7 +58,7 @@
 
   "auth": {
     "emailLabel": "Имейл",
-    "password": "Парола",
+    "passwordLabel": "Парола",
     "errors": {
       "email": "Моля, въведете валиден имейл адрес",
       "password": "Минимум осем знака, поне една буква и една цифра, поне един специален знак"
@@ -67,7 +67,7 @@
 
   "signUp": {
     "usernameLabel": "Потребителско име",
-    "confirmPasswordLabel": "Потвърдете Паролата",
+    "confirmPasswordLabel": "Потвърдете паролата",
     "errors": {
       "username": {
         "server": "Потребителското име вече съществува",

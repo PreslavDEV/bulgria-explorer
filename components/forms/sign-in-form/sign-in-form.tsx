@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Button, StyleSheet } from "react-native";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -5,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { View } from "@/components/themed";
 import InputField from "@/components/ui/input/input";
 import PasswordInput from "@/components/ui/input/password-input";
+import { DictContext } from "@/providers/dictionary/dictionary.provider";
 
 import { ISignInData } from "./interface";
 import { signInSchema } from "./validation";
@@ -14,9 +16,13 @@ interface ISignInFormProps {
 }
 
 export default function SignInForm(props: ISignInFormProps) {
+  const { auth, global } = useContext(DictContext);
+
+  const { emailLabel, errors: errorsDict, passwordLabel } = auth;
+
   const { control, handleSubmit, formState } = useForm<ISignInData>({
     mode: "onBlur",
-    resolver: zodResolver(signInSchema),
+    resolver: zodResolver(signInSchema(errorsDict)),
   });
   const { errors } = formState;
 
@@ -29,7 +35,7 @@ export default function SignInForm(props: ISignInFormProps) {
           <InputField
             {...rest}
             textContentType="emailAddress"
-            label="Email"
+            label={emailLabel}
             error={errors.email?.message}
             onChangeText={handleChange}
           />
@@ -43,7 +49,7 @@ export default function SignInForm(props: ISignInFormProps) {
           <PasswordInput
             {...rest}
             textContentType="password"
-            label="Password"
+            label={passwordLabel}
             secureTextEntry
             error={errors.password?.message}
             onChangeText={handleChange}
@@ -51,7 +57,7 @@ export default function SignInForm(props: ISignInFormProps) {
         )}
       />
 
-      <Button title="Submit" onPress={handleSubmit(props.onSubmit)} />
+      <Button title={global.submit} onPress={handleSubmit(props.onSubmit)} />
     </View>
   );
 }

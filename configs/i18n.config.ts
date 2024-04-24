@@ -1,3 +1,5 @@
+import { NativeModules } from "react-native";
+
 import bgDict from "../translation/bg.json";
 import enDict from "../translation/en.json";
 
@@ -17,3 +19,5 @@ export const getDictionary = (locale: Locale) =>
   dictionaries[locale] ?? dictionaries.en;
 
 export type Dictionary = ReturnType<typeof getDictionary>;
+
+export const locale = NativeModules.I18nManager.localeIdentifier.split("_")[0];

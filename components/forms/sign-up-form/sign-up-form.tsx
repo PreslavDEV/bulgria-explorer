@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Button, StyleSheet } from "react-native";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -5,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { View } from "@/components/themed";
 import InputField from "@/components/ui/input/input";
 import PasswordInput from "@/components/ui/input/password-input";
+import { DictContext } from "@/providers/dictionary/dictionary.provider";
 
 import { ISignUpData } from "./interface";
 import { signUpSchema } from "./validation";
@@ -14,9 +16,20 @@ interface ISignUpFormProps {
 }
 
 export default function SignUpForm(props: ISignUpFormProps) {
+  const { auth, global, signUp } = useContext(DictContext);
+
+  const { emailLabel, errors: authErrorsDict, passwordLabel } = auth;
+  const {
+    confirmPasswordLabel,
+    usernameLabel,
+    errors: signUpErrorsDict,
+  } = signUp;
+
   const { control, handleSubmit, formState } = useForm<ISignUpData>({
     mode: "onBlur",
-    resolver: zodResolver(signUpSchema),
+    resolver: zodResolver(
+      signUpSchema({ ...authErrorsDict, ...signUpErrorsDict }),
+    ),
   });
   const { errors } = formState;
 
@@ -29,7 +42,7 @@ export default function SignUpForm(props: ISignUpFormProps) {
           <InputField
             {...rest}
             textContentType="emailAddress"
-            label="Email"
+            label={emailLabel}
             error={errors.email?.message}
             onChangeText={handleChange}
           />
@@ -43,7 +56,7 @@ export default function SignUpForm(props: ISignUpFormProps) {
           <InputField
             {...rest}
             textContentType="username"
-            label="Username"
+            label={usernameLabel}
             error={errors.username?.message}
             onChangeText={handleChange}
           />
@@ -57,7 +70,7 @@ export default function SignUpForm(props: ISignUpFormProps) {
           <PasswordInput
             {...rest}
             textContentType="password"
-            label="Password"
+            label={passwordLabel}
             secureTextEntry
             error={errors.password?.message}
             onChangeText={handleChange}
@@ -72,7 +85,7 @@ export default function SignUpForm(props: ISignUpFormProps) {
           <PasswordInput
             {...rest}
             textContentType="password"
-            label="Password"
+            label={confirmPasswordLabel}
             secureTextEntry
             error={errors.confirmPassword?.message}
             onChangeText={handleChange}
@@ -80,7 +93,7 @@ export default function SignUpForm(props: ISignUpFormProps) {
         )}
       />
 
-      <Button title="Submit" onPress={handleSubmit(props.onSubmit)} />
+      <Button title={global.submit} onPress={handleSubmit(props.onSubmit)} />
     </View>
   );
 }

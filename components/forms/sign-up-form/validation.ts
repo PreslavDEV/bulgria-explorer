@@ -1,30 +1,36 @@
 import { z, ZodType } from "zod";
 
+import { Dictionary } from "@/configs/i18n.config";
 import { emailRegex, passwordRegex } from "@/constants/validation.constants";
 
 import { ISignUpData } from "./interface";
 
-export const signUpSchema: ZodType<ISignUpData> = z
-  .object({
-    email: z
-      .string()
-      .regex(emailRegex, { message: "Please enter a valid email address" }),
-    username: z.string().min(3, { message: "Minimum three characters" }),
-    password: z.string().regex(passwordRegex, {
-      message:
-        "Minimum eight characters, at least one letter and one number, at least on special character",
-    }),
-    confirmPassword: z.string().regex(passwordRegex, {
-      message:
-        "Minimum eight characters, at least one letter and one number, at least on special character",
-    }),
-  })
-  .superRefine(({ confirmPassword, password }, ctx) => {
-    if (confirmPassword !== password) {
-      ctx.addIssue({
-        path: ["confirmPassword"],
-        code: "custom",
-        message: "The passwords didn't match",
-      });
-    }
-  });
+type SignUpErrorsDict = Dictionary["auth"]["errors"] &
+  Dictionary["signUp"]["errors"];
+
+export const signUpSchema = ({
+  email,
+  password: passwordErr,
+  confirmPassword: confirmPasswordErr,
+  username,
+}: SignUpErrorsDict): ZodType<ISignUpData> =>
+  z
+    .object({
+      email: z.string().regex(emailRegex, { message: email }),
+      username: z.string().min(3, { message: username.client }),
+      password: z.string().regex(passwordRegex, {
+        message: passwordErr,
+      }),
+      confirmPassword: z.string().regex(passwordRegex, {
+        message: passwordErr,
+      }),
+    })
+    .superRefine(({ confirmPassword, password }, ctx) => {
+      if (confirmPassword !== password) {
+        ctx.addIssue({
+          path: ["confirmPassword"],
+          code: "custom",
+          message: confirmPasswordErr,
+        });
+      }
+    });

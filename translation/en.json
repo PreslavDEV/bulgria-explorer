@@ -58,7 +58,7 @@
 
   "auth": {
     "emailLabel": "Email",
-    "password": "Password",
+    "passwordLabel": "Password",
     "errors": {
       "email": "Please enter a valid email address",
       "password": "Minimum eight characters, at least one letter and one number, at least on special character"
@@ -67,7 +67,7 @@
 
   "signUp": {
     "usernameLabel": "Username",
-    "confirmPasswordLabel": "Confirm Password",
+    "confirmPasswordLabel": "Confirm password",
     "errors": {
       "username": {
         "server": "Username already exists",

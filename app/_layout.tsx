@@ -1,7 +1,6 @@
 import "reflect-metadata";
 
 import { useCallback, useEffect } from "react";
-import { NativeModules } from "react-native";
 import Toast from "react-native-toast-message";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import {
@@ -19,7 +18,7 @@ import { observer } from "mobx-react-lite";
 import ColorBottomSheet from "@/components/ui/color-bottom-sheet/color-bottom-sheet";
 import { TYPES } from "@/configs/di-types.config";
 import { auth } from "@/configs/firebase.config";
-import { getDictionary } from "@/configs/i18n.config";
+import { getDictionary, locale } from "@/configs/i18n.config";
 import { container } from "@/configs/inversify.config";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import DictionaryProvider from "@/providers/dictionary/dictionary.provider";
@@ -36,8 +35,6 @@ export const unstable_settings = {
 
 const SpaceMono = require("../assets/fonts/SpaceMono-Regular.ttf");
 const SpaceMonoBold = require("../assets/fonts/SpaceMono-Bold.ttf");
-
-const locale = NativeModules.I18nManager.localeIdentifier.split("_")[0];
 
 SplashScreen.preventAutoHideAsync();
 

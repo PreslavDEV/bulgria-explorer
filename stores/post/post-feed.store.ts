@@ -1,3 +1,4 @@
+import { formatDistanceStrict, getTime } from "date-fns";
 import { getDocs, onSnapshot, QuerySnapshot } from "firebase/firestore";
 import { injectable } from "inversify";
 import { action, makeObservable, observable } from "mobx";
@@ -28,9 +29,15 @@ export class PostFeedStore extends PostStore {
   private preparePosts = (snapshot: QuerySnapshot) => {
     const posts: IPost[] = [];
     snapshot.forEach((doc) => {
-      posts.push({ id: doc.id, ...doc.data() } as IPost);
-    });
+      const dateTimestamp = getTime(new Date(doc.data().dateCreated));
 
+      const dateCreated = `${formatDistanceStrict(dateTimestamp, Date.now())} ago`;
+      posts.push({
+        id: doc.id,
+        ...doc.data(),
+        dateCreated,
+      } as IPost);
+    });
     this.setPosts(posts);
   };
 

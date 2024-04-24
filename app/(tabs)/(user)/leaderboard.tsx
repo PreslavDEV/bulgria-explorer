@@ -1,18 +1,16 @@
 import { StyleSheet } from "react-native";
 
-import EditScreenInfo from "@/components/example";
 import { Text, View } from "@/components/themed";
 
-export default function TabTwoScreen() {
+export default function LeaderboardScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab Two</Text>
+      <Text style={styles.title}>Leaderboard</Text>
       <View
         style={styles.separator}
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
-      <EditScreenInfo path="app/(tabs)/two.tsx" />
     </View>
   );
 }

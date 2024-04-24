@@ -50,11 +50,17 @@ export default function RootLayout() {
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
+  // TODO get isAuth
+  const isAuth = false;
+
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: "modal" }} />
+        {isAuth ? (
+          <Stack.Screen name="(tabs)/(user)" options={{ headerShown: false }} />
+        ) : (
+          <Stack.Screen name="(tabs)/(auth)" options={{ headerShown: false }} />
+        )}
       </Stack>
     </ThemeProvider>
   );

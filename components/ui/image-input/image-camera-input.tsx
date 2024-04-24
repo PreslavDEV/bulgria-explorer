@@ -1,14 +1,15 @@
 import { useCallback } from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 
 import Icon from "../icon/icon";
 
-// TODO props and result handling
+import { IImageInputProps } from "./interface";
+import { imageInputStyles } from "./styles";
 
-interface IImageCameraInputProps {}
+export default function ImageCameraInput(props: IImageInputProps) {
+  const { onAddImage } = props;
 
-export default function ImageCameraInput(props: IImageCameraInputProps) {
   const handleUpload = useCallback(async () => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
     if (!permissionResult.granted) {
@@ -23,23 +24,12 @@ export default function ImageCameraInput(props: IImageCameraInputProps) {
       quality: 1,
     });
 
-    console.log(result);
-  }, []);
+    onAddImage(result);
+  }, [onAddImage]);
 
   return (
-    <TouchableOpacity style={styles.container} onPress={handleUpload}>
+    <TouchableOpacity style={imageInputStyles.container} onPress={handleUpload}>
       <Icon name="camera" />
     </TouchableOpacity>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#2f95dc",
-    height: 60,
-    width: 60,
-    borderRadius: 16,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

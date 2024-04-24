@@ -1,14 +1,15 @@
 import { useCallback } from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 
 import Icon from "../icon/icon";
 
-// TODO props and result handling
+import { IImageInputProps } from "./interface";
+import { imageInputStyles } from "./styles";
 
-interface IImageGalleryInputProps {}
+export default function ImageGalleryInput(props: IImageInputProps) {
+  const { onAddImage } = props;
 
-export default function ImageGalleryInput(props: IImageGalleryInputProps) {
   const handleUpload = useCallback(async () => {
     const permissionResult =
       await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -24,23 +25,12 @@ export default function ImageGalleryInput(props: IImageGalleryInputProps) {
       quality: 1,
     });
 
-    console.log(result);
-  }, []);
+    onAddImage(result);
+  }, [onAddImage]);
 
   return (
-    <TouchableOpacity style={styles.container} onPress={handleUpload}>
+    <TouchableOpacity style={imageInputStyles.container} onPress={handleUpload}>
       <Icon name="image" />
     </TouchableOpacity>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#2f95dc",
-    height: 60,
-    width: 60,
-    borderRadius: 16,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

@@ -1,5 +1,6 @@
 export const COMMON_TABS = [
   { name: "index", title: "Home", options: { href: "(tabs)/" } },
+  { name: "create-post/index", title: "Create Post", options: { href: null } },
 ];
 
 export const AUTH_TABS = [

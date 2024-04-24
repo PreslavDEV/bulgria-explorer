@@ -5,6 +5,9 @@ import {
   doc,
   increment,
   onSnapshot,
+  orderBy,
+  Query,
+  query,
   QuerySnapshot,
   setDoc,
   updateDoc,
@@ -27,12 +30,19 @@ export class PostFeedStore extends PostStore {
 
   public userId: Maybe<string>;
 
+  private postsQuery: Query;
+
   constructor() {
     super();
 
     this.posts = [];
 
     this.userId = null;
+
+    this.postsQuery = query(
+      this.postsCollection,
+      orderBy("dateCreated", "desc"),
+    );
 
     makeObservable(this, {
       posts: observable,
@@ -42,7 +52,7 @@ export class PostFeedStore extends PostStore {
       setUserId: action.bound,
     });
 
-    onSnapshot(this.postsCollection, (snapshot) => {
+    onSnapshot(this.postsQuery, (snapshot) => {
       this.preparePosts(snapshot);
     });
 

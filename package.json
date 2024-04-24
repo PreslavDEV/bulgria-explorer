@@ -9,7 +9,8 @@
     "web": "expo start --web",
     "test": "jest --watchAll",
     "lint": "npx eslint ./",
-    "lint-fix": "npx eslint ./ --fix"
+    "lint-fix": "npx eslint ./ --fix",
+    "type-check": "npx tsc"
   },
   "jest": {
     "preset": "jest-expo"

@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from "react";
-import { ScrollView, StyleSheet } from "react-native";
+import { ActivityIndicator, ScrollView, StyleSheet } from "react-native";
 import { useInjection } from "inversify-react";
 import { observer } from "mobx-react-lite";
 
@@ -11,7 +11,7 @@ import { useColorScheme } from "@/hooks/use-color-scheme";
 import { PostFeedStore } from "@/stores/post/post-feed.store";
 
 export const PostFeedContainer = observer(() => {
-  const { posts, votePost, userId } = useInjection<PostFeedStore>(
+  const { posts, votePost, userId, loadingPosts } = useInjection<PostFeedStore>(
     TYPES.PostFeedStore,
   );
 
@@ -28,6 +28,14 @@ export const PostFeedContainer = observer(() => {
     },
     [votePost],
   );
+
+  if (!posts.length && loadingPosts) {
+    return (
+      <View style={styles.loadingWrapper}>
+        <ActivityIndicator size={62} color="#2f95dc" />
+      </View>
+    );
+  }
 
   return (
     <ScrollView style={{ backgroundColor }}>
@@ -53,6 +61,10 @@ export const PostFeedContainer = observer(() => {
 const styles = StyleSheet.create({
   cardContainer: {
     marginBottom: 32,
+  },
+  loadingWrapper: {
+    flex: 1,
+    justifyContent: "center",
   },
   withShadow: {
     shadowColor: "#ccc",

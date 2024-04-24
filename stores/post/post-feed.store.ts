@@ -32,12 +32,16 @@ export class PostFeedStore extends PostStore {
 
   private postsQuery: Query;
 
+  public loadingPosts: boolean;
+
   constructor() {
     super();
 
     this.posts = [];
 
     this.userId = null;
+
+    this.loadingPosts = true;
 
     this.postsQuery = query(
       this.postsCollection,
@@ -47,9 +51,11 @@ export class PostFeedStore extends PostStore {
     makeObservable(this, {
       posts: observable,
       userId: observable,
+      loadingPosts: observable,
 
       setPosts: action.bound,
       setUserId: action.bound,
+      setLoadingPosts: action.bound,
     });
 
     onSnapshot(this.postsQuery, (snapshot) => {
@@ -78,6 +84,7 @@ export class PostFeedStore extends PostStore {
   };
 
   private preparePosts = (snapshot: QuerySnapshot) => {
+    this.setLoadingPosts(true);
     const posts: IPost[] = [];
 
     snapshot.forEach((document) => {
@@ -94,6 +101,7 @@ export class PostFeedStore extends PostStore {
     });
 
     this.setPosts(posts);
+    this.setLoadingPosts(false);
   };
 
   private updateAuthors = (snapshot: QuerySnapshot) => {
@@ -144,5 +152,9 @@ export class PostFeedStore extends PostStore {
 
   public setUserId(val: Maybe<string>) {
     this.userId = val;
+  }
+
+  public setLoadingPosts(val: boolean) {
+    this.loadingPosts = val;
   }
 }

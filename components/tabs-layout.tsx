@@ -6,9 +6,10 @@ import { useColorScheme } from "@/hooks/use-color-scheme";
 
 import Icon from "./ui/icon/icon";
 
-interface ITabItem {
+export interface ITabItem {
   name: string;
   title: string;
+  options: { href: Maybe<string> };
 }
 
 interface ITabsLayoutProps {
@@ -33,11 +34,12 @@ export default function TabsLayout(props: ITabsLayoutProps) {
         headerShown: true,
       }}
     >
-      {tabs.map(({ name, title }) => (
+      {tabs.map(({ name, title, options }) => (
         <Tabs.Screen
           key={name}
           name={name}
           options={{
+            ...options,
             title,
             tabBarIcon: ({ color }) => renderTabBarIcon(color),
             // headerRight: () => renderHeaderRight(),

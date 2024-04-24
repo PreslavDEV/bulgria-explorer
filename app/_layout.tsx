@@ -24,7 +24,7 @@ export { ErrorBoundary } from "expo-router";
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export const unstable_settings = {
-  initialRouteName: "(tabs)(user)/index",
+  initialRouteName: "(tabs)/index",
 };
 
 const SpaceMono = require("../assets/fonts/SpaceMono-Regular.ttf");
@@ -33,8 +33,9 @@ SplashScreen.preventAutoHideAsync();
 
 const RootLayoutNav = observer(() => {
   const colorScheme = useColorScheme();
-  const { initializing, user, setInitializing, setUser } =
-    useInjection<AuthStore>(TYPES.AuthStore);
+  const { initializing, setInitializing, setUser } = useInjection<AuthStore>(
+    TYPES.AuthStore,
+  );
 
   const handleAuthStateChanged = useCallback(
     (userState: Maybe<User>) => {
@@ -55,11 +56,7 @@ const RootLayoutNav = observer(() => {
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <Stack>
-        {user ? (
-          <Stack.Screen name="(tabs)/(user)" options={{ headerShown: false }} />
-        ) : (
-          <Stack.Screen name="(tabs)/(auth)" options={{ headerShown: false }} />
-        )}
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       </Stack>
     </ThemeProvider>
   );

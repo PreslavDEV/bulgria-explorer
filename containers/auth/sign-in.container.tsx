@@ -14,7 +14,7 @@ export const SignInContainer = observer(() => {
   const handleSignUp = useCallback(
     async (data: ISignInData) => {
       await signIn(data);
-      router.replace("/(tabs)/(user)");
+      router.replace("/(tabs)/");
     },
     [signIn],
   );

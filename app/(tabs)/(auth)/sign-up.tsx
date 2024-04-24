@@ -1,33 +1,12 @@
-import { StyleSheet } from "react-native";
+import { useCallback } from "react";
 
-import { Text, View } from "@/components/themed";
+import { ISignUpData } from "@/components/forms/sign-up-form/interface";
+import SignUpForm from "@/components/forms/sign-up-form/sign-up-form";
 
 export default function SignUpScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Sign up</Text>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
-    </View>
-  );
-}
+  const handleSignUp = useCallback((data: ISignUpData) => {
+    console.log(data);
+  }, []);
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
-  },
-});
+  return <SignUpForm onSubmit={handleSignUp} />;
+}

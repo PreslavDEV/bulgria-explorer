@@ -11,7 +11,7 @@ import { LayoutStore } from "@/stores/layout/layout.store";
 import { labelUserColors } from "@/utils/get-random-color.util";
 
 export const ProfileContainer = observer(() => {
-  const { user, signOut, updateUserColor } = useInjection<AuthStore>(
+  const { user, signOut, updateUserColor, myPosts } = useInjection<AuthStore>(
     TYPES.AuthStore,
   );
   const { sheetRef, setColorOptions } = useInjection<LayoutStore>(
@@ -66,7 +66,7 @@ export const ProfileContainer = observer(() => {
       // TODO change when adding points
       points={10}
       ranking={1}
-      posts={[]}
+      posts={myPosts}
       sheetRef={sheetRef}
       onSignOut={handleSignOut}
     />

@@ -10,17 +10,22 @@ import {
   doc,
   getDoc,
   getDocs,
+  onSnapshot,
   query,
+  QuerySnapshot,
   setDoc,
   where,
 } from "firebase/firestore";
 import { injectable } from "inversify";
-import { action, makeObservable, observable } from "mobx";
+import { action, makeObservable, observable, reaction } from "mobx";
 
 import { ISignInData } from "@/components/forms/sign-in-form/interface";
 import { ISignUpData } from "@/components/forms/sign-up-form/interface";
 import { auth, db } from "@/configs/firebase.config";
+import { getFormattedPostDate } from "@/utils/get-formatted-post-date.util";
 import { getRandomColor } from "@/utils/get-random-color.util";
+
+import { IPost } from "../post/interface";
 
 import { IUser } from "./interface";
 
@@ -34,6 +39,10 @@ export class AuthStore {
 
   public initializing: boolean;
 
+  public myPosts: IPost[];
+
+  private initialPostsSnapshot: Maybe<QuerySnapshot>;
+
   constructor() {
     this.path = "users";
 
@@ -43,12 +52,36 @@ export class AuthStore {
 
     this.initializing = true;
 
+    this.myPosts = [];
+
+    this.initialPostsSnapshot = null;
+
     makeObservable(this, {
       user: observable,
       initializing: observable,
+      myPosts: observable,
 
       setUser: action.bound,
+      setMyPosts: action.bound,
       setInitializing: action.bound,
+    });
+
+    reaction(
+      () => this.user,
+      () => {
+        if (this.initialPostsSnapshot) {
+          this.prepareMyPosts(this.initialPostsSnapshot);
+        }
+      },
+    );
+
+    onSnapshot(collection(db, "posts"), (snapshot) => {
+      if (!this.initialPostsSnapshot) {
+        this.initialPostsSnapshot = snapshot;
+        return;
+      }
+
+      this.prepareMyPosts(snapshot);
     });
   }
 
@@ -58,12 +91,38 @@ export class AuthStore {
     return snapshot.empty;
   };
 
+  private prepareMyPosts = (snapshot: QuerySnapshot) => {
+    if (!this.user) return;
+
+    const posts: IPost[] = [];
+
+    snapshot.forEach((document) => {
+      const dateCreated = getFormattedPostDate(document.data().dateCreated);
+      if (document.data().author.id === this.user?.id) {
+        posts.push({
+          id: document.id,
+          ...document.data(),
+          // false because in this context hasVoted is irrelevant, we don't need to make calculations
+          hasVoted: false,
+          dateCreated,
+          votes: document.data().votes.length,
+        } as IPost);
+      }
+    });
+
+    this.setMyPosts(posts);
+  };
+
   public setUser(user: Maybe<IUser>) {
     this.user = user;
   }
 
   public setInitializing(value: boolean) {
     this.initializing = value;
+  }
+
+  public setMyPosts(posts: IPost[]) {
+    this.myPosts = posts;
   }
 
   public signUp = async ({ email, password, username }: ISignUpData) => {

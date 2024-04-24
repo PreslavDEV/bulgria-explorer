@@ -31,11 +31,7 @@ export const PostFeedContainer = observer(() => {
             i !== posts.length - 1 && styles.withShadow,
           ]}
         >
-          <PostCard
-            {...post}
-            votesCount={post.votes.length}
-            onVote={handleVote}
-          />
+          <PostCard {...post} onVote={handleVote} />
           {i !== posts.length - 1 && <View style={styles.separator} />}
         </View>
       ))}

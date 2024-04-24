@@ -23,7 +23,6 @@ import Icon from "../ui/icon/icon";
 const windowWidth = Dimensions.get("window").width;
 
 interface IPostCardProps extends IPost {
-  votesCount: number;
   onVote: (postId: string) => void;
 }
 

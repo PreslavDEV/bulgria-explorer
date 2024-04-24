@@ -1,10 +1,8 @@
-import { formatDistanceStrict, getTime } from "date-fns";
 import {
   arrayRemove,
   arrayUnion,
   collection,
   doc,
-  getDocs,
   onSnapshot,
   QuerySnapshot,
   setDoc,
@@ -13,6 +11,7 @@ import { injectable } from "inversify";
 import { action, makeObservable, observable } from "mobx";
 
 import { db } from "@/configs/firebase.config";
+import { getFormattedPostDate } from "@/utils/get-formatted-post-date.util";
 
 import { IUser } from "../auth/interface";
 
@@ -45,46 +44,47 @@ export class PostFeedStore extends PostStore {
     });
 
     onSnapshot(collection(db, "users"), (snapshot) => {
-      snapshot.forEach((snap) => {
-        const user = snap.data() as IUser;
-        const updatedPosts = this.posts.map((post) => {
-          if (post.author.id === user.id) {
-            return {
-              ...post,
-              author: user,
-            };
-          }
-
-          return post;
-        });
-
-        this.setPosts(updatedPosts);
-      });
+      this.updateAuthors(snapshot);
     });
   }
 
   private preparePosts = (snapshot: QuerySnapshot) => {
     const posts: IPost[] = [];
+
     snapshot.forEach((document) => {
-      const dateTimestamp = getTime(new Date(document.data().dateCreated));
       const hasVoted = !!document
         .data()
         .votes.find((vote: string) => vote === this.userId);
 
-      const dateCreated = `${formatDistanceStrict(dateTimestamp, Date.now())} ago`;
+      const dateCreated = getFormattedPostDate(document.data().dateCreated);
       posts.push({
         id: document.id,
         ...document.data(),
         hasVoted,
         dateCreated,
+        votesCount: document.data().votes.length,
       } as IPost);
     });
+
     this.setPosts(posts);
   };
 
-  public getPosts = async () => {
-    const snapshot = await getDocs(this.postsCollection);
-    this.preparePosts(snapshot);
+  private updateAuthors = (snapshot: QuerySnapshot) => {
+    snapshot.forEach((snap) => {
+      const user = snap.data() as IUser;
+      const updatedPosts = this.posts.map((post) => {
+        if (post.author.id === user.id) {
+          return {
+            ...post,
+            author: user,
+          };
+        }
+
+        return post;
+      });
+
+      this.setPosts(updatedPosts);
+    });
   };
 
   public votePost = async (postId: string) => {

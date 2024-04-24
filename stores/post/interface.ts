@@ -11,4 +11,5 @@ export interface IPost {
   author: IUser;
   votes: string[];
   hasVoted: boolean;
+  votesCount: number;
 }

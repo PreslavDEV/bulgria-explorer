@@ -1,4 +1,4 @@
-const colors = [
+const userColors = [
   "#FF5F6D", // Red
   "#FFE066", // Yellow
   "#FFB74D", // Orange
@@ -11,7 +11,20 @@ const colors = [
   "#7986CB", // Indigo
 ];
 
+export const labelUserColors = [
+  { label: "Red", value: "#FF5F6D" },
+  { label: "Yellow", value: "#FFE066" },
+  { label: "Orange", value: "#FFB74D" },
+  { label: "Green", value: "#4CAF50" },
+  { label: "Purple", value: "#BA68C8" },
+  { label: "Pink", value: "#FF80AB" },
+  { label: "Lime", value: "#CDDC39" },
+  { label: "Teal", value: "#4DB6AC" },
+  { label: "Amber", value: "#FFC107" },
+  { label: "Indigo", value: "#7986CB" },
+];
+
 export const getRandomColor = () => {
-  const index = Math.floor(Math.random() * colors.length);
-  return colors[index];
+  const index = Math.floor(Math.random() * userColors.length);
+  return userColors[index];
 };

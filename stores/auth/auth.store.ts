@@ -94,7 +94,6 @@ export class AuthStore {
     if (userCredential) {
       this.getUserEntity(userCredential.user);
     }
-    // TODO handle errors
   };
 
   public getUserEntity = async (authUser: Maybe<User>, username?: string) => {
@@ -124,5 +123,15 @@ export class AuthStore {
     await signOut(auth);
 
     this.setUser(null);
+  };
+
+  public updateUserColor = async (color: string) => {
+    if (this.user) {
+      const userDoc = doc(db, this.path, this.user.id);
+
+      setDoc(userDoc, { color }, { merge: true });
+
+      this.setUser({ ...this.user, color });
+    }
   };
 }

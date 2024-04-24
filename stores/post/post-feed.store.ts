@@ -2,6 +2,7 @@ import { formatDistanceStrict, getTime } from "date-fns";
 import {
   arrayRemove,
   arrayUnion,
+  collection,
   doc,
   getDocs,
   onSnapshot,
@@ -12,6 +13,8 @@ import { injectable } from "inversify";
 import { action, makeObservable, observable } from "mobx";
 
 import { db } from "@/configs/firebase.config";
+
+import { IUser } from "../auth/interface";
 
 import { IPost } from "./interface";
 import { PostStore } from "./post.store";
@@ -39,6 +42,24 @@ export class PostFeedStore extends PostStore {
 
     onSnapshot(this.postsCollection, (snapshot) => {
       this.preparePosts(snapshot);
+    });
+
+    onSnapshot(collection(db, "users"), (snapshot) => {
+      snapshot.forEach((snap) => {
+        const user = snap.data() as IUser;
+        const updatedPosts = this.posts.map((post) => {
+          if (post.author.id === user.id) {
+            return {
+              ...post,
+              author: user,
+            };
+          }
+
+          return post;
+        });
+
+        this.setPosts(updatedPosts);
+      });
     });
   }
 

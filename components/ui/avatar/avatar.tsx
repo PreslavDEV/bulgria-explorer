@@ -7,19 +7,20 @@ import { MonoText } from "@/components/styled-text";
 interface IAvatarProps {
   username: string;
   color: string;
+  size?: number;
 }
 
 export default function Avatar(props: IAvatarProps) {
-  const { username, color } = props;
+  const { username, color, size = 48 } = props;
 
   return (
     <LinearGradient
-      style={styles.avatar}
+      style={[styles.avatar, { height: size, width: size }]}
       colors={[color, "#2f95dc"]}
       start={{ x: 1, y: 1 }}
       end={{ x: 0, y: 0 }}
     >
-      <MonoText style={styles.username} bold>
+      <MonoText style={{ fontSize: size / 2 }} bold>
         {username[0]}
       </MonoText>
     </LinearGradient>
@@ -28,13 +29,8 @@ export default function Avatar(props: IAvatarProps) {
 
 const styles = StyleSheet.create({
   avatar: {
-    height: 48,
-    width: 48,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 999,
-  },
-  username: {
-    fontSize: 24,
   },
 });

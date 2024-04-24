@@ -15,11 +15,13 @@ import { onAuthStateChanged, User } from "firebase/auth";
 import { Provider, useInjection } from "inversify-react";
 import { observer } from "mobx-react-lite";
 
+import ColorBottomSheet from "@/components/ui/color-bottom-sheet/color-bottom-sheet";
 import { TYPES } from "@/configs/di-types.config";
 import { auth } from "@/configs/firebase.config";
 import { container } from "@/configs/inversify.config";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { AuthStore } from "@/stores/auth/auth.store";
+import { LayoutStore } from "@/stores/layout/layout.store";
 import { PostFeedStore } from "@/stores/post/post-feed.store";
 
 export { ErrorBoundary } from "expo-router";
@@ -39,6 +41,9 @@ const RootLayoutNav = observer(() => {
   const { initializing, setInitializing, getUserEntity } =
     useInjection<AuthStore>(TYPES.AuthStore);
   const { setUserId } = useInjection<PostFeedStore>(TYPES.PostFeedStore);
+  const { setSheetRef, colorOptions } = useInjection<LayoutStore>(
+    TYPES.LayoutStore,
+  );
 
   const handleAuthStateChanged = useCallback(
     (userState: Maybe<User>) => {
@@ -58,11 +63,14 @@ const RootLayoutNav = observer(() => {
   if (initializing) return null;
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      </Stack>
-    </ThemeProvider>
+    <>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        </Stack>
+      </ThemeProvider>
+      <ColorBottomSheet options={colorOptions} setSheetRef={setSheetRef} />
+    </>
   );
 });
 

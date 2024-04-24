@@ -16,6 +16,7 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@devvie/bottom-sheet": "^0.3.0",
     "@expo/vector-icons": "^14.0.0",
     "@hookform/resolvers": "^3.3.4",
     "@react-native-async-storage/async-storage": "^1.21.0",

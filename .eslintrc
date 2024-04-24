@@ -1,0 +1,91 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "env": {
+    "es6": true,
+  },
+  "ignorePatterns": ["babel.config.js"],
+  "plugins": [
+    "@typescript-eslint",
+    "import",
+    "prettier",
+    "jsx-a11y",
+    "react",
+    "react-hooks",
+    "simple-import-sort",
+  ],
+  "extends": [
+    "next/core-web-vitals",
+    "airbnb",
+    "airbnb/hooks",
+    "airbnb-typescript",
+    "prettier",
+    "plugin:prettier/recommended",
+  ],
+  "rules": {
+    "@typescript-eslint/no-use-before-define": "off",
+    "jsx-a11y/mouse-events-have-key-events": "off",
+    "import/prefer-default-export": "off",
+    "no-nested-ternary": "off",
+    "no-plusplus": "off",
+    "react/button-has-type": "off",
+    "react/function-component-definition": "off",
+    "react/hook-use-state": "warn",
+    "react/jsx-handler-names": [
+      "warn",
+      {
+        "checkLocalVariables": true,
+      },
+    ],
+    "react/jsx-no-useless-fragment": "warn",
+    "react/jsx-props-no-spreading": "off",
+    "react/require-default-props": "off",
+    "react/destructuring-assignment": "off",
+    "class-methods-use-this": "off",
+    "react/react-in-jsx-scope": "off",
+    "no-await-in-loop": "off",
+    "react/sort-prop-types": [
+      "warn",
+      {
+        "callbacksLast": true,
+      },
+    ],
+    "simple-import-sort/imports": "off",
+  },
+  "parserOptions": {
+    "project": "./tsconfig.json",
+  },
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "rules": {
+        "simple-import-sort/imports": [
+          "error",
+          {
+            "groups": [
+              // Packages `react` related packages come first.
+              ["^react", "^@?\\w"],
+              // Services
+              ["^(@|services)(/.*|$)"],
+              // Stores
+              ["^(@|stores)(/.*|$)"],
+              // Containers
+              ["^(@|containers)(/.*|$)"],
+              // Configs, helpers, routes
+              ["^(@|configs|helpers|routes)(/.*|$)"],
+              // Hooks
+              ["^(@|hooks)(/.*|$)"],
+              // Components
+              ["^(@|components)(/.*|$)"],
+              // Parent imports. Put `..` last.
+              ["^\\.\\.(?!/?$)", "^\\.\\./?$"],
+              // Other relative imports. Put same-folder imports and `.` last.
+              ["^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$"],
+              // Style imports.
+              ["^.+\\.?(less|css)$"],
+            ],
+          },
+        ],
+      },
+    },
+  ],
+}

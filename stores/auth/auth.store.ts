@@ -11,6 +11,8 @@ import {
   getDoc,
   getDocs,
   onSnapshot,
+  orderBy,
+  Query,
   query,
   QuerySnapshot,
   setDoc,
@@ -43,6 +45,8 @@ export class AuthStore {
 
   private initialPostsSnapshot: Maybe<QuerySnapshot>;
 
+  private postsQuery: Query;
+
   constructor() {
     this.path = "users";
 
@@ -55,6 +59,11 @@ export class AuthStore {
     this.myPosts = [];
 
     this.initialPostsSnapshot = null;
+
+    this.postsQuery = query(
+      collection(db, "posts"),
+      orderBy("dateCreated", "desc"),
+    );
 
     makeObservable(this, {
       user: observable,
@@ -85,7 +94,7 @@ export class AuthStore {
       },
     );
 
-    onSnapshot(collection(db, "posts"), (snapshot) => {
+    onSnapshot(this.postsQuery, (snapshot) => {
       if (!this.initialPostsSnapshot) {
         this.initialPostsSnapshot = snapshot;
         return;

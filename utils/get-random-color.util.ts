@@ -11,7 +11,7 @@ const userColors = [
   "#7986CB", // Indigo
 ];
 
-export const labelUserColors = [
+export const LABEL_USER_COLORS = [
   { label: "Red", value: "#FF5F6D" },
   { label: "Yellow", value: "#FFE066" },
   { label: "Orange", value: "#FFB74D" },
@@ -22,7 +22,7 @@ export const labelUserColors = [
   { label: "Teal", value: "#4DB6AC" },
   { label: "Amber", value: "#FFC107" },
   { label: "Indigo", value: "#7986CB" },
-];
+] as const;
 
 export const getRandomColor = () => {
   const index = Math.floor(Math.random() * userColors.length);

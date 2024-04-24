@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useContext, useEffect, useMemo } from "react";
 import { router } from "expo-router";
 import { useInjection } from "inversify-react";
 import { observer } from "mobx-react-lite";
@@ -6,9 +6,10 @@ import { observer } from "mobx-react-lite";
 import { Profile } from "@/components/profile/profile";
 import { TYPES } from "@/configs/di-types.config";
 import { useHandleError } from "@/hooks/use-handle-error";
+import { DictContext } from "@/providers/dictionary/dictionary.provider";
 import { AuthStore } from "@/stores/auth/auth.store";
 import { LayoutStore } from "@/stores/layout/layout.store";
-import { labelUserColors } from "@/utils/get-random-color.util";
+import { LABEL_USER_COLORS } from "@/utils/get-random-color.util";
 
 export const ProfileContainer = observer(() => {
   const { user, signOut, updateUserColor, myPosts } = useInjection<AuthStore>(
@@ -17,6 +18,7 @@ export const ProfileContainer = observer(() => {
   const { sheetRef, setColorOptions } = useInjection<LayoutStore>(
     TYPES.LayoutStore,
   );
+  const { colors } = useContext(DictContext);
 
   const setError = useHandleError();
 
@@ -34,12 +36,12 @@ export const ProfileContainer = observer(() => {
 
   const colorOptions = useMemo(
     () =>
-      labelUserColors.map(({ label, value }) => ({
+      LABEL_USER_COLORS.map(({ label, value }) => ({
         color: value,
-        label,
+        label: colors[label],
         onPress: handleColorClick(value),
       })),
-    [handleColorClick],
+    [colors, handleColorClick],
   );
 
   const handleSignOut = useCallback(async () => {

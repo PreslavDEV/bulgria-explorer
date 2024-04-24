@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useContext, useMemo } from "react";
 import { Button, StyleSheet, TouchableOpacity } from "react-native";
 import { BottomSheetMethods } from "@devvie/bottom-sheet";
 
@@ -6,6 +6,7 @@ import { MonoText } from "@/components/styled-text";
 import { View } from "@/components/themed";
 import Avatar from "@/components/ui/avatar/avatar";
 import { useColorScheme } from "@/hooks/use-color-scheme";
+import { DictContext } from "@/providers/dictionary/dictionary.provider";
 import { IUser } from "@/stores/auth/interface";
 
 import { ProfilePointsInfo } from "./profile-points-info/profile-points-info";
@@ -17,6 +18,8 @@ export interface IProfileDetailsProps extends Omit<IUser, "email" | "id"> {
 
 export const ProfileDetails = (props: IProfileDetailsProps) => {
   const { username, color, points, ranking, sheetRef } = props;
+  const { rankingText, changeColorText, signOut } =
+    useContext(DictContext).profile;
 
   const handleOpenSheet = useCallback(() => {
     sheetRef?.open();
@@ -41,7 +44,7 @@ export const ProfileDetails = (props: IProfileDetailsProps) => {
         <ProfilePointsInfo points={points} />
 
         <View style={styles.row}>
-          <MonoText style={styles.smallText}>You are ranked:</MonoText>
+          <MonoText style={styles.smallText}>{rankingText}</MonoText>
           <MonoText style={styles.mediumText} bold>
             #{ranking}
           </MonoText>
@@ -54,10 +57,10 @@ export const ProfileDetails = (props: IProfileDetailsProps) => {
           ]}
           onPress={handleOpenSheet}
         >
-          <MonoText bold>Change your color</MonoText>
+          <MonoText bold>{changeColorText}</MonoText>
         </TouchableOpacity>
 
-        <Button title="Sign Out" onPress={props.onSignOut} color="#E57373" />
+        <Button title={signOut} onPress={props.onSignOut} color="#E57373" />
       </View>
     </View>
   );

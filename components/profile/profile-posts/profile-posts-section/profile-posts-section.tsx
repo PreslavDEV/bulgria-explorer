@@ -1,9 +1,10 @@
-import { useMemo } from "react";
+import { useContext, useMemo } from "react";
 import { Dimensions, Image, StyleSheet } from "react-native";
 
 import { MonoText } from "@/components/styled-text";
 import { View } from "@/components/themed";
 import Icon from "@/components/ui/icon/icon";
+import { DictContext } from "@/providers/dictionary/dictionary.provider";
 
 import { IProfilePostsProps } from "../interface";
 
@@ -11,6 +12,8 @@ const windowWidth = Dimensions.get("window").width;
 
 export const ProfilePostsSection = (props: IProfilePostsProps) => {
   const { posts } = props;
+
+  const { yourPosts } = useContext(DictContext).profile.posts;
 
   const imageWidth = useMemo(() => {
     const postsPerRow = posts.length >= 3 ? 3 : posts.length;
@@ -33,7 +36,7 @@ export const ProfilePostsSection = (props: IProfilePostsProps) => {
   return (
     <>
       <MonoText style={styles.mediumText} bold>
-        Your Posts
+        {yourPosts}
       </MonoText>
       <View style={styles.myPosts}>
         {posts.map(({ id, images, votesCount }) => (

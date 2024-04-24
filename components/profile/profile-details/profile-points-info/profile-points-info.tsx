@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useContext, useMemo, useState } from "react";
 import { Modal, Pressable, StyleSheet, TouchableOpacity } from "react-native";
 
 import { MonoText } from "@/components/styled-text";
@@ -10,6 +10,7 @@ import {
   POINTS_PER_VOTE,
 } from "@/constants/points.constants";
 import { useColorScheme } from "@/hooks/use-color-scheme";
+import { DictContext } from "@/providers/dictionary/dictionary.provider";
 
 export interface IProfileDetailsProps {
   points: number;
@@ -17,6 +18,17 @@ export interface IProfileDetailsProps {
 
 export const ProfilePointsInfo = (props: IProfileDetailsProps) => {
   const { points } = props;
+
+  const {
+    text,
+    points: pointsLabel,
+    point,
+    modalTitle,
+    perPost,
+    perImage,
+    perVote,
+  } = useContext(DictContext).profile.points;
+
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
 
   const colorScheme = useColorScheme();
@@ -29,9 +41,12 @@ export const ProfilePointsInfo = (props: IProfileDetailsProps) => {
     setIsInfoModalOpen(false);
   }, []);
 
-  const getPointsText = useCallback((num: number) => {
-    return num > 1 ? "points" : "point";
-  }, []);
+  const getPointsText = useCallback(
+    (num: number) => {
+      return num > 1 ? pointsLabel : point;
+    },
+    [point, pointsLabel],
+  );
 
   const contentBg = useMemo(
     () => ({ backgroundColor: colorScheme === "dark" ? "#222" : "#ddd" }),
@@ -41,9 +56,9 @@ export const ProfilePointsInfo = (props: IProfileDetailsProps) => {
   return (
     <>
       <TouchableOpacity style={styles.row} onPress={handleOpenInfoModal}>
-        <MonoText style={styles.mediumText}>You have gained:</MonoText>
+        <MonoText style={styles.mediumText}>{text}</MonoText>
         <MonoText style={styles.bigText} bold>
-          {points} points
+          {`${points} ${getPointsText(points)}`}
         </MonoText>
         <Icon name="info-circle" size={14} />
       </TouchableOpacity>
@@ -52,7 +67,7 @@ export const ProfilePointsInfo = (props: IProfileDetailsProps) => {
         <Pressable style={styles.modalOverlay} onPress={handleCloseInfoModal}>
           <View style={[styles.modalContent, contentBg]}>
             <MonoText style={[styles.mediumText, styles.centerText]} bold>
-              Points system overview:
+              {modalTitle}
             </MonoText>
             <View style={[contentBg, styles.modalContentList]}>
               <View style={[contentBg, styles.modalContentListItem]}>
@@ -60,9 +75,7 @@ export const ProfilePointsInfo = (props: IProfileDetailsProps) => {
                   bold
                   style={styles.smallText}
                 >{`${POINTS_PER_POST} ${getPointsText(POINTS_PER_POST)}`}</MonoText>
-                <MonoText style={styles.smallText}>
-                  per post you create
-                </MonoText>
+                <MonoText style={styles.smallText}>{perPost}</MonoText>
               </View>
 
               <View style={[contentBg, styles.modalContentListItem]}>
@@ -70,9 +83,7 @@ export const ProfilePointsInfo = (props: IProfileDetailsProps) => {
                   bold
                   style={styles.smallText}
                 >{`${POINTS_PER_IMAGE} ${getPointsText(POINTS_PER_IMAGE)}`}</MonoText>
-                <MonoText style={styles.smallText}>
-                  per image in a post you have created
-                </MonoText>
+                <MonoText style={styles.smallText}>{perImage}</MonoText>
               </View>
 
               <View style={[contentBg, styles.modalContentListItem]}>
@@ -80,9 +91,7 @@ export const ProfilePointsInfo = (props: IProfileDetailsProps) => {
                   bold
                   style={styles.smallText}
                 >{`${POINTS_PER_VOTE} ${getPointsText(POINTS_PER_VOTE)}`}</MonoText>
-                <MonoText style={styles.smallText}>
-                  per vote your posts receive
-                </MonoText>
+                <MonoText style={styles.smallText}>{perVote}</MonoText>
               </View>
             </View>
           </View>

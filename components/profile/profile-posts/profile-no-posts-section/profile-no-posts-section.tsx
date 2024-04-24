@@ -1,21 +1,24 @@
-import { useCallback } from "react";
+import { useCallback, useContext } from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { router } from "expo-router";
 
 import { MonoText } from "@/components/styled-text";
 import { View } from "@/components/themed";
+import { DictContext } from "@/providers/dictionary/dictionary.provider";
 
 export const ProfileNoPostsSection = () => {
+  const { noPosts, noPostsButton } = useContext(DictContext).profile.posts;
+
   const handleCreatePost = useCallback(() => {
     router.push("/(tabs)/create-post/");
   }, []);
 
   return (
     <View style={styles.noPosts}>
-      <MonoText>Hmm, seems like you haven&apos;t posted yet</MonoText>
+      <MonoText>{noPosts}</MonoText>
       <TouchableOpacity style={styles.createPost} onPress={handleCreatePost}>
         <MonoText style={styles.createPostText} bold>
-          Create your first post
+          {noPostsButton}
         </MonoText>
       </TouchableOpacity>
     </View>

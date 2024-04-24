@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import {
   DarkTheme,
@@ -8,7 +8,9 @@ import {
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
+import { onAuthStateChanged, User } from "firebase/auth";
 
+import { auth } from "@/firebase.config";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 
 export { ErrorBoundary } from "expo-router";
@@ -50,13 +52,29 @@ export default function RootLayout() {
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
-  // TODO get isAuth
-  const isAuth = false;
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState<User | null>();
+
+  const handleAuthStateChanged = useCallback(
+    (userState: User | null) => {
+      setUser(userState);
+      if (initializing) setInitializing(false);
+    },
+    [initializing],
+  );
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, handleAuthStateChanged);
+    return unsubscribe;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (initializing) return null;
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <Stack>
-        {isAuth ? (
+        {user ? (
           <Stack.Screen name="(tabs)/(user)" options={{ headerShown: false }} />
         ) : (
           <Stack.Screen name="(tabs)/(auth)" options={{ headerShown: false }} />

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1004477355444",
+    "project_id": "bulgaria-explorer",
+    "storage_bucket": "bulgaria-explorer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1004477355444:android:b0dbeb0cdcb2e21fea0ee1",
+        "android_client_info": {
+          "package_name": "com.bulgaria.explorer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADyx6dmSaY4L4FuMu0y3RiCTngRLWfx3E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -3,7 +3,7 @@
   "env": {
     "es6": true
   },
-  "ignorePatterns": ["babel.config.js"],
+  "ignorePatterns": ["babel.config.js", "metro.config.js"],
   "plugins": [
     "@typescript-eslint",
     "import",

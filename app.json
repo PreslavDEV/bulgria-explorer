@@ -17,10 +17,12 @@
       "supportsTablet": true
     },
     "android": {
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.bulgaria.explorer"
     },
     "web": {
       "bundler": "metro",
@@ -30,6 +32,14 @@
     "plugins": ["expo-router"],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "5d43a6a1-4b36-4c5b-bf4e-38f31c59452a"
+      }
     }
   }
 }

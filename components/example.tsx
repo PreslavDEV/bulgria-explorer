@@ -1,8 +1,8 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 
-import { MonoText } from "./StyledText";
-import { Text, View } from "./Themed";
+import { MonoText } from "./styled-text";
+import { Text, View } from "./themed";
 
 export default function EditScreenInfo({ path }: { path: string }) {
   return (

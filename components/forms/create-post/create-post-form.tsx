@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
   Button,
@@ -18,16 +18,23 @@ import ImageGalleryInput from "@/components/ui/image-input/image-gallery-input";
 import InputField from "@/components/ui/input/input";
 import Colors from "@/constants/colors";
 import { useColorScheme } from "@/hooks/use-color-scheme";
+import { useHandleError } from "@/hooks/use-handle-error";
 
 import { ICreatePostData } from "./interface";
 import { createPostSchema } from "./validation";
 
 interface ICreatePostFormProps {
+  uploadingImages: boolean;
+  creatingPost: boolean;
   onSubmit: (data: ICreatePostData) => void;
 }
 
 export default function CreatePostForm(props: ICreatePostFormProps) {
+  const { uploadingImages, creatingPost } = props;
+
   const colorScheme = useColorScheme();
+
+  const setError = useHandleError();
 
   const { control, handleSubmit, formState, watch, setValue } =
     useForm<ICreatePostData>({
@@ -44,8 +51,7 @@ export default function CreatePostForm(props: ICreatePostFormProps) {
   const handleUserCity = useCallback(async () => {
     const { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
-      alert("Permission to access location was denied");
-      return;
+      setError("Permission to access location was denied");
     }
 
     const { coords } = await Location.getCurrentPositionAsync({});
@@ -53,7 +59,7 @@ export default function CreatePostForm(props: ICreatePostFormProps) {
     const { city } = gecodedAddresses[0];
 
     setValue("city", city || "");
-  }, [setValue]);
+  }, [setError, setValue]);
 
   useEffect(() => {
     handleUserCity();
@@ -82,6 +88,18 @@ export default function CreatePostForm(props: ICreatePostFormProps) {
     },
     [images, setValue],
   );
+
+  const loadingText = useMemo(() => {
+    if (uploadingImages) {
+      return "Uploading...";
+    }
+
+    if (creatingPost) {
+      return "Creating your post...";
+    }
+
+    return null;
+  }, [creatingPost, uploadingImages]);
 
   return (
     <View style={styles.container}>
@@ -153,6 +171,12 @@ export default function CreatePostForm(props: ICreatePostFormProps) {
       </View>
 
       <Button title="Submit" onPress={handleSubmit(props.onSubmit)} />
+
+      {loadingText && (
+        <View style={styles.loadingContainer}>
+          <Text>{loadingText}</Text>
+        </View>
+      )}
     </View>
   );
 }
@@ -176,5 +200,16 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     position: "relative",
+  },
+  loadingContainer: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    pointerEvents: "none",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "rgba(0,0,0,0.8)",
   },
 });

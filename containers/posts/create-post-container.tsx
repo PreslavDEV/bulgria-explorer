@@ -1,22 +1,43 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
+import { router } from "expo-router";
 import { useInjection } from "inversify-react";
 import { observer } from "mobx-react-lite";
 
 import CreatePostForm from "@/components/forms/create-post/create-post-form";
 import { ICreatePostData } from "@/components/forms/create-post/interface";
 import { TYPES } from "@/configs/di-types.config";
+import { useHandleError } from "@/hooks/use-handle-error";
+import { AuthStore } from "@/stores/auth/auth.store";
 import { PostStore } from "@/stores/post/post.store";
 
 export const CreatePostContainer = observer(() => {
-  const postStore = useInjection<PostStore>(TYPES.PostStore);
+  const { createPost, uploadingImages, creatingPost } = useInjection<PostStore>(
+    TYPES.PostStore,
+  );
+  const { user } = useInjection<AuthStore>(TYPES.AuthStore);
+  const [key, setKey] = useState(0);
+
+  const setError = useHandleError();
 
   const handleCreatePost = useCallback(
     async (data: ICreatePostData) => {
-      console.log(data);
-      postStore.test();
+      try {
+        await createPost(data, user);
+        setKey((prev) => prev + 1);
+        router.push("/(tabs)/");
+      } catch (error) {
+        setError(error);
+      }
     },
-    [postStore],
+    [createPost, setError, user],
   );
 
-  return <CreatePostForm onSubmit={handleCreatePost} />;
+  return (
+    <CreatePostForm
+      key={key}
+      onSubmit={handleCreatePost}
+      uploadingImages={uploadingImages}
+      creatingPost={creatingPost}
+    />
+  );
 });

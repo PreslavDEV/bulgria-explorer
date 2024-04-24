@@ -12,6 +12,7 @@ import {
   GestureDetector,
   GestureHandlerRootView,
 } from "react-native-gesture-handler";
+import { router } from "expo-router";
 
 import { View } from "@/components/themed";
 import { IPost } from "@/stores/post/interface";
@@ -23,6 +24,7 @@ import Icon from "../ui/icon/icon";
 const windowWidth = Dimensions.get("window").width;
 
 interface IPostCardProps extends IPost {
+  isAuth: boolean;
   onVote: (postId: string) => void;
 }
 
@@ -36,6 +38,7 @@ export const PostCard = (props: IPostCardProps) => {
     dateCreated,
     hasVoted,
     votesCount,
+    isAuth,
     onVote,
   } = props;
 
@@ -65,11 +68,15 @@ export const PostCard = (props: IPostCardProps) => {
   }, [opacityAnimation]);
 
   const handleVote = useCallback(() => {
-    onVote(id);
-    if (!hasVoted) {
-      animateElement();
+    if (isAuth) {
+      onVote(id);
+      if (!hasVoted) {
+        animateElement();
+      }
+    } else {
+      router.push("/(tabs)/(auth)/sign-in");
     }
-  }, [animateElement, hasVoted, id, onVote]);
+  }, [animateElement, hasVoted, id, isAuth, onVote]);
 
   const doubleTap = Gesture.Tap()
     .maxDuration(250)

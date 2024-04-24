@@ -9,7 +9,9 @@ import { TYPES } from "@/configs/di-types.config";
 import { PostFeedStore } from "@/stores/post/post-feed.store";
 
 export const PostFeedContainer = observer(() => {
-  const { posts, votePost } = useInjection<PostFeedStore>(TYPES.PostFeedStore);
+  const { posts, votePost, userId } = useInjection<PostFeedStore>(
+    TYPES.PostFeedStore,
+  );
 
   const handleVote = useCallback(
     (postId: string) => {
@@ -31,7 +33,7 @@ export const PostFeedContainer = observer(() => {
             i !== posts.length - 1 && styles.withShadow,
           ]}
         >
-          <PostCard {...post} onVote={handleVote} />
+          <PostCard {...post} isAuth={!!userId} onVote={handleVote} />
           {i !== posts.length - 1 && <View style={styles.separator} />}
         </View>
       ))}

@@ -12,20 +12,31 @@ import {
   GestureHandlerRootView,
 } from "react-native-gesture-handler";
 
-import { Text, View } from "@/components/themed";
+import { View } from "@/components/themed";
 import { IPost } from "@/stores/post/interface";
 
+import { MonoText } from "../styled-text";
+import Avatar from "../ui/avatar/avatar";
 import Icon from "../ui/icon/icon";
 
 const windowWidth = Dimensions.get("window").width;
 
 interface IPostCardProps extends IPost {
+  votesCount: number;
   hasVoted: boolean;
   onVote: () => void;
 }
 
 export const PostCard = (props: IPostCardProps) => {
-  const { city, description, images, hasVoted, onVote: handleVote } = props;
+  const {
+    city,
+    description,
+    images,
+    author,
+    hasVoted,
+    votesCount,
+    onVote: handleVote,
+  } = props;
 
   const doubleTap = Gesture.Tap()
     .maxDuration(250)
@@ -42,32 +53,45 @@ export const PostCard = (props: IPostCardProps) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{city}</Text>
-      {description && <Text>{description}</Text>}
-
+      <View style={styles.header}>
+        <Avatar username={author.username} />
+        <MonoText style={styles.mediumText}>{author.username}</MonoText>
+      </View>
       <GestureHandlerRootView>
         <GestureDetector gesture={doubleTap}>
-          <ScrollView
-            horizontal
-            style={{ alignSelf: "center", marginHorizontal: -16 }}
-          >
+          <ScrollView horizontal style={styles.scrollableImages}>
             {images.map(({ uri, id }) => (
-              <View key={id}>
-                <Image
-                  source={{ uri }}
-                  style={{ width: windowWidth, aspectRatio: 1 }}
-                  resizeMode="cover"
-                />
-              </View>
+              <Image
+                key={id}
+                source={{ uri }}
+                style={styles.image}
+                resizeMode="cover"
+              />
             ))}
           </ScrollView>
         </GestureDetector>
       </GestureHandlerRootView>
 
-      <View style={{ alignSelf: "flex-start" }}>
+      <View style={styles.votingContainer}>
         <TouchableOpacity onPress={handleVote}>
           <Icon {...heartProps} />
         </TouchableOpacity>
+        {!!votesCount && (
+          <MonoText style={styles.bigText}>{votesCount}</MonoText>
+        )}
+      </View>
+
+      <View>
+        <MonoText style={styles.city}>{city}</MonoText>
+        {description && (
+          <MonoText darkColor="#ccc" lightColor="#333" style={styles.smallText}>
+            {description}
+          </MonoText>
+        )}
+        <MonoText darkColor="#777" lightColor="#777" style={styles.smallText}>
+          {/* TODO add date to post */}
+          {new Date().toTimeString()}
+        </MonoText>
       </View>
     </View>
   );
@@ -78,8 +102,31 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     gap: 8,
   },
-  title: {
-    fontSize: 28,
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 16,
+  },
+  scrollableImages: { alignSelf: "center", marginHorizontal: -16 },
+  image: { width: windowWidth, aspectRatio: 1 },
+  votingContainer: {
+    alignSelf: "flex-start",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  city: {
+    fontSize: 16,
     fontWeight: "bold",
+  },
+  bigText: {
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  mediumText: {
+    fontSize: 16,
+  },
+  smallText: {
+    fontSize: 12,
   },
 });

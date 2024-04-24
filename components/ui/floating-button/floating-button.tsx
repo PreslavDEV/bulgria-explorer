@@ -18,8 +18,8 @@ export default function FloatingButton(props: IFloatingButtonProps) {
 const styles = StyleSheet.create({
   buttonContainer: {
     position: "absolute",
-    bottom: 32,
-    right: 32,
+    bottom: 16,
+    right: 16,
     backgroundColor: "#2f95dc",
     borderRadius: 999,
     width: 72,

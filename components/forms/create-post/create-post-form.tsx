@@ -11,7 +11,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ImagePickerResult } from "expo-image-picker";
 import * as Location from "expo-location";
 
-import { Text, View } from "@/components/themed";
+import { MonoText } from "@/components/styled-text";
+import { View } from "@/components/themed";
 import Icon from "@/components/ui/icon/icon";
 import ImageCameraInput from "@/components/ui/image-input/image-camera-input";
 import ImageGalleryInput from "@/components/ui/image-input/image-gallery-input";
@@ -160,9 +161,9 @@ export default function CreatePostForm(props: ICreatePostFormProps) {
         ))}
       </ScrollView>
       {errors.images && (
-        <Text style={{ color: Colors[colorScheme ?? "light"].inputError }}>
+        <MonoText style={{ color: Colors[colorScheme ?? "light"].inputError }}>
           {errors.images?.message}
-        </Text>
+        </MonoText>
       )}
 
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
@@ -174,7 +175,7 @@ export default function CreatePostForm(props: ICreatePostFormProps) {
 
       {loadingText && (
         <View style={styles.loadingContainer}>
-          <Text>{loadingText}</Text>
+          <MonoText>{loadingText}</MonoText>
         </View>
       )}
     </View>

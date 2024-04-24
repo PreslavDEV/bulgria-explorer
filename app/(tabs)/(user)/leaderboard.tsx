@@ -1,11 +1,12 @@
 import { StyleSheet } from "react-native";
 
-import { Text, View } from "@/components/themed";
+import { MonoText } from "@/components/styled-text";
+import { View } from "@/components/themed";
 
 export default function LeaderboardScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Leaderboard</Text>
+      <MonoText style={styles.title}>Leaderboard</MonoText>
       <View
         style={styles.separator}
         lightColor="#eee"

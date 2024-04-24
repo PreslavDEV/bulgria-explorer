@@ -1,17 +1,18 @@
 import { StyleSheet } from "react-native";
 import { Link, Stack } from "expo-router";
 
-import { Text, View } from "@/components/themed";
+import { MonoText } from "@/components/styled-text";
+import { View } from "@/components/themed";
 
 export default function NotFoundScreen() {
   return (
     <>
       <Stack.Screen options={{ title: "Oops!" }} />
       <View style={styles.container}>
-        <Text style={styles.title}>404 Not found!</Text>
+        <MonoText style={styles.title}>404 Not found!</MonoText>
 
         <Link href="/" style={styles.link}>
-          <Text style={styles.linkText}>Go to home screen!</Text>
+          <MonoText style={styles.linkText}>Go to home screen!</MonoText>
         </Link>
       </View>
     </>

@@ -2,12 +2,13 @@ import { Platform, StyleSheet } from "react-native";
 import { StatusBar } from "expo-status-bar";
 
 import EditScreenInfo from "@/components/example";
-import { Text, View } from "@/components/themed";
+import { MonoText } from "@/components/styled-text";
+import { View } from "@/components/themed";
 
 export default function ModalScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Modal</Text>
+      <MonoText style={styles.title}>Modal</MonoText>
       <View
         style={styles.separator}
         lightColor="#eee"

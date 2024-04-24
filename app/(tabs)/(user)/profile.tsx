@@ -3,7 +3,8 @@ import { Button, StyleSheet } from "react-native";
 import { router } from "expo-router";
 import { useInjection } from "inversify-react";
 
-import { Text, View } from "@/components/themed";
+import { MonoText } from "@/components/styled-text";
+import { View } from "@/components/themed";
 import { TYPES } from "@/configs/di-types.config";
 import { AuthStore } from "@/stores/auth/auth.store";
 
@@ -17,7 +18,7 @@ export default function SignInScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Profile</Text>
+      <MonoText style={styles.title}>Profile</MonoText>
       <View
         style={styles.separator}
         lightColor="#eee"

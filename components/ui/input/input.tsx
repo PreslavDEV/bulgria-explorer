@@ -7,7 +7,8 @@ import {
   ViewStyle,
 } from "react-native";
 
-import { Text, View } from "@/components/themed";
+import { MonoText } from "@/components/styled-text";
+import { View } from "@/components/themed";
 import Colors from "@/constants/colors";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 
@@ -40,12 +41,12 @@ export default function InputField(props: IInputProps) {
 
   return (
     <View style={styles.container}>
-      {label && <Text>{label}</Text>}
+      {label && <MonoText>{label}</MonoText>}
       <TextInput style={inputStyle} {...rest} />
       {error && (
-        <Text style={{ color: Colors[colorScheme ?? "light"].inputError }}>
+        <MonoText style={{ color: Colors[colorScheme ?? "light"].inputError }}>
           {error}
-        </Text>
+        </MonoText>
       )}
       {rightIconProps && <Icon style={styles.rightIcon} {...rightIconProps} />}
     </View>

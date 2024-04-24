@@ -17,7 +17,7 @@ export default function ImageCameraInput(props: IImageInputProps) {
   const handleUpload = useCallback(async () => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
     if (!permissionResult.granted) {
-      setError("You've refused to allow this appp to access your camera!");
+      setError("You've refused to allow this app to access your camera!");
     }
 
     const result = await ImagePicker.launchCameraAsync({

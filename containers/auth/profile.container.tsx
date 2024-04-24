@@ -63,8 +63,6 @@ export const ProfileContainer = observer(() => {
   return (
     <Profile
       {...user}
-      // TODO change when adding points
-      ranking={1}
       posts={myPosts}
       sheetRef={sheetRef}
       onSignOut={handleSignOut}

@@ -1,0 +1,117 @@
+{
+  "global": {
+    "submit": "Submit"
+  },
+
+  "tabs": {
+    "Home": "Home",
+    "Create Post": "Create Post",
+    "Sign In": "Sign In",
+    "Sign Up": "Sign Up",
+    "Leaderboard": "Leaderboard",
+    "Profile": "Profile"
+  },
+
+  "notFound": {
+    "pageTitle": "Oops!",
+    "title": "404 Not found!",
+    "linkText": "Go to home screen!"
+  },
+
+  "createPost": {
+    "uploadingText": "Uploading...",
+    "creatingText": "Creating your post...",
+    "cityLabel": "City",
+    "descriptionLabel": "Description",
+    "permissionDenied": "Permission to access {name} was denied",
+    "permissionName": {
+      "location": "location",
+      "camera": "camera",
+      "gallery": "gallery"
+    },
+    "errors": {
+      "city": "Please enter the city from where this post is being created",
+      "description": "Maximum description length is 255 characters",
+      "images": "At least one photo is required to create a post"
+    }
+  },
+
+  "profile": {
+    "rankingText": "You are ranked:",
+    "changeColorText": "Change your color",
+    "signOut": "Sign out",
+    "points": {
+      "text": "You have gained:",
+      "modalTitle": "Points system overview:",
+      "points": "points",
+      "point": "point",
+      "perPost": "per post you create",
+      "perImage": "per image in a post you have created",
+      "perVote": " per vote your posts receive"
+    },
+    "posts": {
+      "yourPosts": "Your Posts",
+      "noPosts": "Hmm, seems like you haven't posted yet",
+      "noPostsButton": "Create your first post"
+    }
+  },
+
+  "auth": {
+    "emailLabel": "Email",
+    "password": "Password",
+    "errors": {
+      "email": "Please enter a valid email address",
+      "password": "Minimum eight characters, at least one letter and one number, at least on special character"
+    }
+  },
+
+  "signUp": {
+    "usernameLabel": "Username",
+    "confirmPasswordLabel": "Confirm Password",
+    "errors": {
+      "username": {
+        "server": "Username already exists",
+        "client": "Minimum three characters"
+      },
+      "confirmPassword": "The passwords didn't match"
+    }
+  },
+
+  "colors": {
+    "Red": "Red",
+    "Yellow": "Yellow",
+    "Orange": "Orange",
+    "Green": "Green",
+    "Purple": "Purple",
+    "Pink": "Pink",
+    "Lime": "Lime",
+    "Teal": "Teal",
+    "Amber": "Amber",
+    "Indigo": "Indigo"
+  },
+
+  "dates": {
+    "second": "second",
+    "seconds": "seconds",
+
+    "minute": "minute",
+    "minutes": "minutes",
+
+    "hour": "hour",
+    "hours": "hours",
+
+    "day": "day",
+    "days": "days",
+
+    "week": "week",
+    "weeks": "weeks",
+
+    "month": "month",
+    "months": "months",
+
+    "year": "year",
+    "years": "years",
+
+    "ago": "ago"
+  }
+}

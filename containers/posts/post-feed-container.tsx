@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import { useInjection } from "inversify-react";
 import { observer } from "mobx-react-lite";
@@ -9,14 +9,14 @@ import { TYPES } from "@/configs/di-types.config";
 import { PostFeedStore } from "@/stores/post/post-feed.store";
 
 export const PostFeedContainer = observer(() => {
-  const { posts } = useInjection<PostFeedStore>(TYPES.PostFeedStore);
+  const { posts, votePost } = useInjection<PostFeedStore>(TYPES.PostFeedStore);
 
-  // TODO remove when voting is ready
-  const [dummyVote, setDummyVote] = useState(false);
-
-  const handleVote = useCallback(() => {
-    setDummyVote((prev) => !prev);
-  }, []);
+  const handleVote = useCallback(
+    (postId: string) => {
+      votePost(postId);
+    },
+    [votePost],
+  );
 
   return (
     <ScrollView>
@@ -33,9 +33,7 @@ export const PostFeedContainer = observer(() => {
         >
           <PostCard
             {...post}
-            hasVoted={dummyVote}
-            // TODO remove when voting is ready
-            votesCount={i + 1}
+            votesCount={post.votes.length}
             onVote={handleVote}
           />
           {i !== posts.length - 1 && <View style={styles.separator} />}

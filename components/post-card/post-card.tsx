@@ -24,12 +24,12 @@ const windowWidth = Dimensions.get("window").width;
 
 interface IPostCardProps extends IPost {
   votesCount: number;
-  hasVoted: boolean;
-  onVote: () => void;
+  onVote: (postId: string) => void;
 }
 
 export const PostCard = (props: IPostCardProps) => {
   const {
+    id,
     city,
     description,
     images,
@@ -66,11 +66,11 @@ export const PostCard = (props: IPostCardProps) => {
   }, [opacityAnimation]);
 
   const handleVote = useCallback(() => {
-    onVote();
+    onVote(id);
     if (!hasVoted) {
       animateElement();
     }
-  }, [animateElement, hasVoted, onVote]);
+  }, [animateElement, hasVoted, id, onVote]);
 
   const doubleTap = Gesture.Tap()
     .maxDuration(250)
@@ -103,9 +103,9 @@ export const PostCard = (props: IPostCardProps) => {
               />
             </Animated.View>
             <ScrollView horizontal style={styles.scrollableImages}>
-              {images.map(({ uri, id }) => (
+              {images.map(({ uri, id: imageId }) => (
                 <Image
-                  key={id}
+                  key={imageId}
                   source={{ uri }}
                   style={styles.image}
                   resizeMode="cover"

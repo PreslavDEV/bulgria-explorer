@@ -20,6 +20,7 @@ import { auth } from "@/configs/firebase.config";
 import { container } from "@/configs/inversify.config";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { AuthStore } from "@/stores/auth/auth.store";
+import { PostFeedStore } from "@/stores/post/post-feed.store";
 
 export { ErrorBoundary } from "expo-router";
 
@@ -37,13 +38,15 @@ const RootLayoutNav = observer(() => {
   const colorScheme = useColorScheme();
   const { initializing, setInitializing, getUserEntity } =
     useInjection<AuthStore>(TYPES.AuthStore);
+  const { setUserId } = useInjection<PostFeedStore>(TYPES.PostFeedStore);
 
   const handleAuthStateChanged = useCallback(
     (userState: Maybe<User>) => {
       getUserEntity(userState);
+      setUserId(userState?.uid || "");
       if (initializing) setInitializing(false);
     },
-    [getUserEntity, initializing, setInitializing],
+    [getUserEntity, initializing, setInitializing, setUserId],
   );
 
   useEffect(() => {

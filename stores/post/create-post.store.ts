@@ -97,6 +97,7 @@ export class CreatePostStore extends PostStore {
       images,
       author,
       dateCreated: new Date().toISOString(),
+      votes: [],
     });
 
     this.setCreatingPost(false);

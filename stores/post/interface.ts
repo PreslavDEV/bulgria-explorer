@@ -9,4 +9,6 @@ export interface IPost {
   images: IImageData[];
   dateCreated: string;
   author: IUser;
+  votes: string[];
+  hasVoted: boolean;
 }
